@@ -1,0 +1,4 @@
+/* Page styles live in src/styles.scss (they exceed the per-component style budget). */
+:host {
+  display: block;
+}
