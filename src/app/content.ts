@@ -128,9 +128,8 @@ export const profile = {
   initials: 'GC',
   title: 'Front-End Developer / UX Designer',
   location: 'Long Island, New York',
-  email: 'higilok@yahoo.com',
+  email: 'choigilok@gmail.com',
   linkedinUrl: 'https://www.linkedin.com/in/gilok-choi-13b859235/',
-  githubUrl: 'https://github.com/choigilok-dotcom',
   // Put your résumé in /public (e.g. public/resume.pdf) and set this to 'resume.pdf'
   // to show the "Download résumé" button.
   resumeUrl: '',
