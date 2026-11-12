@@ -234,11 +234,32 @@ export class App {
   protected readonly skills: { group: string; items: string[] }[] = [
     {
       group: 'Front-end',
-      items: ['Angular', 'TypeScript', 'JavaScript', 'HTML', 'CSS / SCSS', 'REST APIs'],
+      items: [
+        'Angular',
+        'TypeScript',
+        'JavaScript',
+        'HTML',
+        'CSS / SCSS',
+        'Tailwind CSS',
+        'Bootstrap',
+        'DOM API',
+        'Responsive Design',
+        'REST APIs',
+      ],
     },
     {
       group: 'UX & design',
-      items: ['UX Design', 'Design Systems', 'Wireframing', 'Prototyping', 'Responsive Design', 'Accessibility (WCAG)'],
+      items: [
+        'UX Design',
+        'Design Systems',
+        'Wireframing',
+        'Prototyping',
+        'Accessibility (WCAG)',
+        'Figma',
+        'Adobe XD',
+        'Balsamiq',
+        'Adobe Fireworks',
+      ],
     },
     {
       group: 'Tools & workflow',
