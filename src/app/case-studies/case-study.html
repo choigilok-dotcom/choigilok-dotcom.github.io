@@ -65,6 +65,51 @@
         </section>
       }
 
+      @if (cs.screens; as screens) {
+        <section class="case-part">
+          <h3 class="case-part-title">Each screen: the original and my redesign</h3>
+          <ol class="audit">
+            @for (pair of screens; track pair.before.src; let i = $index) {
+              <li class="audit-item">
+                <h4 class="audit-title">
+                  <span class="audit-num">{{ i + 1 }}</span>
+                  {{ pair.title }}
+                </h4>
+                <p class="pair-caption">{{ pair.caption }}</p>
+                <div class="proto-compare">
+                  <button type="button" class="shot" (click)="openShot(screenShots(screens), pair.before)">
+                    <span class="shot-label proto-side-label">Original</span>
+                    <span class="shot-frame">
+                      <img
+                        [src]="pair.before.src"
+                        [alt]="pair.before.label"
+                        [width]="pair.before.width"
+                        [height]="pair.before.height"
+                        loading="lazy"
+                      />
+                    </span>
+                  </button>
+                  @if (pair.after; as after) {
+                    <button type="button" class="shot" (click)="openShot(screenShots(screens), after)">
+                      <span class="shot-label proto-side-label proto-side-new">Redesign</span>
+                      <span class="shot-frame">
+                        <img [src]="after.src" [alt]="after.label" [width]="after.width" [height]="after.height" loading="lazy" />
+                      </span>
+                    </button>
+                  } @else {
+                    <div class="shot shot-pending">
+                      <span class="shot-label proto-side-label proto-side-new">Redesign</span>
+                      <span class="shot-frame shot-frame-pending">New design coming soon</span>
+                    </div>
+                  }
+                </div>
+              </li>
+            }
+          </ol>
+          <p class="shots-hint">Select a screenshot to view it full size. Names of other staff are blurred.</p>
+        </section>
+      }
+
       @if (cs.progression; as progression) {
         <section class="case-part">
           <h3 class="case-part-title">The original vs. each prototype</h3>

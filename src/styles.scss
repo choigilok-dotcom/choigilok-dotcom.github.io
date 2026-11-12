@@ -1279,6 +1279,29 @@ h2 {
   line-height: 1.35;
 }
 
+/* Screen pairs (original vs. redesign) */
+
+.pair-caption {
+  margin-top: -8px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.shot-pending {
+  cursor: default;
+}
+
+.shot-frame.shot-frame-pending {
+  display: grid;
+  place-items: center;
+  border-style: dashed;
+  border-color: var(--line-2);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
 .audit-num {
   flex: none;
   width: 30px;

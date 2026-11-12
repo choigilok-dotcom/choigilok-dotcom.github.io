@@ -95,6 +95,16 @@ export interface CaseStudy {
   progression?: Prototype[];
   /** Grouped screenshots of the work itself. */
   gallery?: GalleryGroup[];
+  /** Screen-by-screen redesign: original on the left, new design on the right. */
+  screens?: ScreenPair[];
+}
+
+export interface ScreenPair {
+  title: string;
+  caption: string;
+  before: Shot;
+  /** Missing until the new design is ready. */
+  after?: Shot;
 }
 
 export interface GalleryGroup {
@@ -227,6 +237,28 @@ const dsShot = (file: string, label: string, caption: string, width = 1440, heig
   caption,
   width,
   height,
+});
+
+const vd = 'images/vendor-disbursements/';
+/** `redesign` is the [width, height] of images/vendor-disbursements/redesign-N.webp, once it exists. */
+const vdScreen = (
+  n: number,
+  title: string,
+  caption: string,
+  width: number,
+  height: number,
+  redesign?: [number, number],
+): ScreenPair => ({
+  title,
+  caption,
+  before: { src: `${vd}original-${n}.webp`, label: `Original · ${title}`, caption, width, height },
+  after: redesign && {
+    src: `${vd}redesign-${n}.webp`,
+    label: `Redesign · ${title}`,
+    caption,
+    width: redesign[0],
+    height: redesign[1],
+  },
 });
 
 export const caseStudies: CaseStudy[] = [
@@ -501,17 +533,26 @@ export const caseStudies: CaseStudy[] = [
     ],
   },
   {
-    id: 'websites',
+    id: 'vendor-disbursements',
     number: '03',
-    title: 'IAS & MAS websites — Spanish launch and modernization',
-    meta: 'Web · Localization · Performance',
-    summary: 'Launched the Spanish IAS site and moved both company sites from Bootstrap to native HTML.',
+    title: 'Vendor Disbursements — redesigning the approval admin tools',
+    meta: 'Admin tools · Workflow · Redesign',
+    summary: 'Redesigning the tools admins use to move in-flight work and maintain the approval rules for vendor payments.',
+    status: 'In progress',
     problem:
-      'Both websites ran on Bootstrap components with JavaScript errors and performance issues, and content updates were hard to manage.',
+      'When someone changes roles or leaves, admins move the work waiting on them and update the approval rules that route each vendor payment. The original screens did the job, but key states were easy to miss: disabled steps looked like faint text, an error that blocks every bulk change was one line of red text, and moving someone’s work and replacing them in the rules lived in two separate tools.',
     approach:
-      'Developed and launched the Spanish IAS site, then replaced Bootstrap components with native HTML across both sites. I maintain the Contentful CMS and the templates, themes and plugins for 5+ company blogs including IAS, MAS and Relocate USA, monitored with GA4, Clarity and Lighthouse.',
-    result:
-      'Both sites run on maintainable native HTML with JavaScript errors resolved and ongoing performance monitoring. The Spanish version is live alongside English.',
+      'Redesigning each admin screen of Reassign Work and Bulk Rules & Tester on the company design system, one screen at a time against the original.',
+    result: 'In progress. Each redesigned screen appears next to its original below.',
+    screens: [
+      vdScreen(1, 'Reassign Work · Choose people', 'Pick whose work to move and who receives it. Everyone with work waiting is listed with counts by role.', 1497, 914, [1484, 911]),
+      vdScreen(2, 'Reassign Work · Review disbursements', 'Select the disbursements to move and give a reason that is saved in each disbursement’s history.', 1514, 871, [1481, 910]),
+      vdScreen(3, 'Reassign Work · Result', 'What moved, a CSV copy, and a reminder that the approval rules still send new work to the old person.', 1483, 865, [1478, 912]),
+      vdScreen(4, 'Bulk Rules · Replace user', 'Swap one person for another on every approval rule and level, with a preview before anything is saved.', 1501, 907, [1476, 911]),
+      vdScreen(5, 'Bulk Rules · Get the file', 'Download the ruleset as an Excel file, edit it, and upload it again.', 1476, 911, [1472, 911]),
+      vdScreen(6, 'Bulk Rules · Review changes', 'See what the uploaded file adds, changes and deletes before testing it.', 1489, 911, [1480, 911]),
+      vdScreen(7, 'Bulk Rules · Apply', 'Apply the tested change. A backup of the current rules is taken first.', 1498, 911, [1472, 910]),
+    ],
   },
 ];
 

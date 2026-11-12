@@ -1,6 +1,6 @@
 import { Component, ElementRef, computed, input, signal, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { GalleryGroup, Shot, caseStudies, profile } from '../content';
+import { GalleryGroup, ScreenPair, Shot, caseStudies, profile } from '../content';
 
 /** One case study page. The route passes the case id through `data.id`. */
 @Component({
@@ -72,6 +72,11 @@ export class CaseStudy {
   protected allShots(compare: Shot[] = [], progression: Shot[] = []): Shot[] {
     const extra = compare.filter((c) => !progression.some((p) => p.src === c.src));
     return [...extra, ...progression];
+  }
+
+  /** Every original and redesign screenshot, in page order. */
+  protected screenShots(screens: ScreenPair[]): Shot[] {
+    return screens.flatMap((p) => (p.after ? [p.before, p.after] : [p.before]));
   }
 
   /** Every gallery image of a case study, in page order. */
