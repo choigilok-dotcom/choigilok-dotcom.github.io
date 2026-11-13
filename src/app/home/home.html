@@ -19,7 +19,11 @@
       @if (resumeUrl) {
         <a class="btn btn-outline" [href]="resumeUrl" download>
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></svg>
-          Download résumé
+          Résumé (PDF)
+        </a>
+        <a class="btn btn-outline" [href]="resumeDocxUrl" download>
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></svg>
+          Résumé (Word)
         </a>
       } @else {
         <a class="btn btn-outline" [href]="linkedinUrl" target="_blank" rel="noopener">View LinkedIn</a>
@@ -270,6 +274,7 @@
         <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>
         Email me
       </a>
+      <a class="btn btn-ghost" [href]="resumeUrl" target="_blank" rel="noopener">Résumé (PDF)</a>
       <a class="btn btn-ghost" [href]="linkedinUrl" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>

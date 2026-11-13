@@ -130,9 +130,9 @@ export const profile = {
   location: 'Long Island, New York',
   email: 'choigilok@gmail.com',
   linkedinUrl: 'https://www.linkedin.com/in/gilok-choi-13b859235/',
-  // Put your résumé in /public (e.g. public/resume.pdf) and set this to 'resume.pdf'
-  // to show the "Download résumé" button.
-  resumeUrl: '',
+  // Résumé files live in /public/resume.
+  resumeUrl: 'resume/gilok-choi.pdf',
+  resumeDocxUrl: 'resume/gilok-choi.docx',
 };
 
 export const heroStats: Stat[] = [

@@ -22,6 +22,7 @@ export class Home {
   protected readonly email = profile.email;
   protected readonly linkedinUrl = profile.linkedinUrl;
   protected readonly resumeUrl = profile.resumeUrl;
+  protected readonly resumeDocxUrl = profile.resumeDocxUrl;
 
   protected readonly heroStats = heroStats;
   protected readonly principles = principles;
