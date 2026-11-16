@@ -131,8 +131,8 @@ export const profile = {
   email: 'choigilok@gmail.com',
   linkedinUrl: 'https://www.linkedin.com/in/gilok-choi-13b859235/',
   // Résumé files live in /public/resume.
-  resumeUrl: 'resume/gilok-choi.pdf',
-  resumeDocxUrl: 'resume/gilok-choi.docx',
+  resumeUrl: 'resume/Gilok_Choi_Resume.pdf',
+  resumeDocxUrl: 'resume/Gilok_Choi_Resume.docx',
 };
 
 export const heroStats: Stat[] = [
