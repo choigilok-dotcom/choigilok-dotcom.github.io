@@ -282,6 +282,13 @@ svg {
     font-size: clamp(40px, 5vw, 64px);
     line-height: 1.05;
     letter-spacing: -0.02em;
+
+    // Keep "rely on every day." together on the last line.
+    .accent {
+      @media (min-width: 640px) {
+        white-space: nowrap;
+      }
+    }
   }
 
   .actions {
