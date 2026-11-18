@@ -206,41 +206,43 @@
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section id="experience" class="band">
-  <div class="container split">
-    <div class="split-intro split-intro-narrow">
-      <span class="eyebrow">Experience</span>
-      <h2>From the classroom to production</h2>
-    </div>
-    <div class="jobs">
-      @for (job of experience; track job.role + job.company) {
-        <article class="job">
-          <div class="job-head">
-            <div>
-              <h3>{{ job.role }}</h3>
-              <div class="job-company">{{ job.company }}</div>
+<!-- EXPERIENCE (hidden for now: see showExperience in content.ts) -->
+@if (showExperience) {
+  <section id="experience" class="band">
+    <div class="container split">
+      <div class="split-intro split-intro-narrow">
+        <span class="eyebrow">Experience</span>
+        <h2>From the classroom to production</h2>
+      </div>
+      <div class="jobs">
+        @for (job of experience; track job.role + job.company) {
+          <article class="job">
+            <div class="job-head">
+              <div>
+                <h3>{{ job.role }}</h3>
+                <div class="job-company">{{ job.company }}</div>
+              </div>
+              <span class="job-period">{{ job.period }}</span>
             </div>
-            <span class="job-period">{{ job.period }}</span>
-          </div>
-          @if (job.areas) {
-            <div class="job-areas">
-              @for (area of job.areas; track area.title) {
-                <div class="job-area">
-                  <h4>{{ area.title }}</h4>
-                  <p>{{ area.text }}</p>
-                </div>
-              }
-            </div>
-          }
-          @if (job.summary) {
-            <p class="job-summary">{{ job.summary }}</p>
-          }
-        </article>
-      }
+            @if (job.areas) {
+              <div class="job-areas">
+                @for (area of job.areas; track area.title) {
+                  <div class="job-area">
+                    <h4>{{ area.title }}</h4>
+                    <p>{{ area.text }}</p>
+                  </div>
+                }
+              </div>
+            }
+            @if (job.summary) {
+              <p class="job-summary">{{ job.summary }}</p>
+            }
+          </article>
+        }
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+}
 
 <!-- SKILLS -->
 <section id="skills" class="container section section-skills">
@@ -250,7 +252,7 @@
   </div>
   <div class="grid-3">
     @for (group of skills; track group.group) {
-      <div class="card skill-card">
+      <div class="card skill-card" [class.skill-card-wide]="group.wide">
         <h3>{{ group.group }}</h3>
         <div class="tags">
           @for (item of group.items; track item) {

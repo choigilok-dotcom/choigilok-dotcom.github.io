@@ -43,7 +43,9 @@
           </ul>
         }
       </div>
-      <a routerLink="/" fragment="experience">Experience</a>
+      @if (showExperience) {
+        <a routerLink="/" fragment="experience">Experience</a>
+      }
       <a routerLink="/" fragment="skills">Skills</a>
       <a class="nav-cta" routerLink="/" fragment="contact">Let’s talk</a>
     </div>

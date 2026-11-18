@@ -591,49 +591,54 @@ export const experience: Job[] = [
   },
 ];
 
-export const skills: { group: string; items: string[] }[] = [
+// Experience section is hidden for now. Set to true to show it again (section + nav link).
+export const showExperience = false;
+
+export const skills: { group: string; items: string[]; wide?: boolean }[] = [
   {
-    group: 'Front-end',
+    group: 'UX/UI design & prototyping',
+    items: ['Figma', 'Balsamiq', 'Photoshop', 'Illustrator'],
+  },
+  {
+    group: 'Front-end development',
     items: [
-      'Angular',
-      'TypeScript',
+      'HTML5',
+      'CSS3',
       'JavaScript',
-      'HTML',
-      'CSS / SCSS',
-      'Tailwind CSS',
+      'TypeScript',
+      'Angular',
+      'AngularJS',
       'Bootstrap',
-      'DOM API',
-      'Responsive Design',
-      'REST APIs',
+      'Tailwind CSS',
+      'Flexbox',
+      'CSS Grid',
+      'Sass',
     ],
   },
   {
-    group: 'UX & design',
-    items: [
-      'UX Design',
-      'Design Systems',
-      'Wireframing',
-      'Prototyping',
-      'Accessibility (WCAG)',
-      'Figma',
-      'Adobe XD',
-      'Balsamiq',
-      'Adobe Fireworks',
-    ],
-  },
-  {
-    group: 'Tools & workflow',
+    group: 'AI-assisted design & development',
     items: [
       'Claude AI',
-      'Contentful',
-      'GA4',
-      'Microsoft Clarity',
-      'Lighthouse',
-      'Git',
-      'IBM WebSphere',
-      'SharePoint',
-      'Liferay',
-      'WildFly',
+      'AI-Assisted UX Design',
+      'AI-Assisted Prototyping',
+      'AI-Assisted Front-end Development',
     ],
+  },
+  {
+    group: 'Evaluation tools',
+    items: ['Google Lighthouse', 'GA4', 'Clarity'],
+  },
+  {
+    group: 'Development tools',
+    items: ['Git', 'Chrome DevTools', 'npm'],
+  },
+  {
+    group: 'CMS & enterprise platforms',
+    items: ['Contentful', 'WordPress', 'Drupal', 'SharePoint', 'Liferay', 'IBM WebSphere', 'Magento'],
+  },
+  {
+    group: 'Additional technologies',
+    items: ['jQuery', 'Dojo', 'PHP', 'Java', 'XML', 'MySQL'],
+    wide: true,
   },
 ];

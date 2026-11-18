@@ -1671,6 +1671,10 @@ h2 {
 
 /* ---------- Skills ---------- */
 
+.skill-card-wide {
+  grid-column: 1 / -1;
+}
+
 .skill-card {
   border-radius: 16px;
   padding: 28px;

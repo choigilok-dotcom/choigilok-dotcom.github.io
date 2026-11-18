@@ -9,6 +9,7 @@ import {
   principles,
   profile,
   skills,
+  showExperience,
   websites,
 } from '../content';
 
@@ -32,4 +33,5 @@ export class Home {
   protected readonly caseStudies = caseStudies;
   protected readonly experience = experience;
   protected readonly skills = skills;
+  protected readonly showExperience = showExperience;
 }
