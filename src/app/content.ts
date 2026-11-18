@@ -593,6 +593,8 @@ export const experience: Job[] = [
 
 // Experience section is hidden for now. Set to true to show it again (section + nav link).
 export const showExperience = false;
+// Skills (Toolkit) section is hidden for now. Set to true to show it again (section + nav link).
+export const showSkills = false;
 
 export const skills: { group: string; items: string[]; wide?: boolean }[] = [
   {
