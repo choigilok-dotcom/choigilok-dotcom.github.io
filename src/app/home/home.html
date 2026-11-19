@@ -229,18 +229,22 @@
     <span class="eyebrow">Education</span>
     <h2>Trained in research and usability</h2>
   </div>
-  <div class="grid-3">
+  <ol class="edu-list">
     @for (d of education; track d.degree) {
-      <article class="card edu-card">
+      <li class="edu-item">
         <span class="edu-year">{{ d.year }}</span>
-        <h3>{{ d.degree }}</h3>
-        <p class="edu-school">{{ d.school }}</p>
-        @if (d.focus) {
-          <p class="edu-focus">{{ d.focus }}</p>
-        }
-      </article>
+        <div class="edu-body">
+          <h3>
+            {{ d.degree }}
+            <span class="edu-school">{{ d.school }}</span>
+          </h3>
+          @if (d.focus) {
+            <p class="edu-focus">{{ d.focus }}</p>
+          }
+        </div>
+      </li>
     }
-  </div>
+  </ol>
 </section>
 
 <!-- CONTACT -->
