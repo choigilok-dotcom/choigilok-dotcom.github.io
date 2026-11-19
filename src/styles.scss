@@ -1732,10 +1732,6 @@ h2 {
   text-align: left;
 }
 
-/* Four case studies read better as a 2 × 2 grid than 3 + 1. */
-.section-cases .grid-3 {
-  grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
-}
 
 .shot-frame.shot-frame-pending {
   display: grid;

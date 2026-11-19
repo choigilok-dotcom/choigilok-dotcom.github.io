@@ -83,6 +83,8 @@ export interface CaseStudy {
   meta: string;
   /** One line for the home page preview card. */
   summary: string;
+  /** Product name for the label above the headline; falls back to the part of `title` before ' — '. */
+  name?: string;
   /** Case study page headline; falls back to `title`. A newline forces a line break on wide screens. */
   heading?: string;
   /** Longer intro for the case study page; falls back to `summary`. */
@@ -97,7 +99,7 @@ export interface CaseStudy {
   context?: CaseContext;
   problem: string;
   approach: string;
-  result: string;
+  result?: string;
   status?: string;
   chips?: string[];
   /** Before / after pair shown large. */
@@ -301,37 +303,15 @@ const dtPair = (
   stackRedesign,
 });
 
-const vd = 'images/vendor-disbursements/';
-/** `redesign` is the [width, height] of images/vendor-disbursements/redesign-N.webp, once it exists. */
-const vdScreen = (
-  n: number,
-  title: string,
-  caption: string,
-  width: number,
-  height: number,
-  redesign?: [number, number],
-): ScreenPair => ({
-  title,
-  caption,
-  before: { src: `${vd}original-${n}.webp`, label: `Original · ${title}`, caption, width, height },
-  after: redesign && {
-    src: `${vd}redesign-${n}.webp`,
-    label: `Redesign · ${title}`,
-    caption,
-    width: redesign[0],
-    height: redesign[1],
-  },
-});
-
 export const caseStudies: CaseStudy[] = [
   {
     id: 'doctree',
     number: '01',
     title: 'Document Management System — from a collapsible tree to a one-click filter sidebar',
+    heading: 'From a collapsible tree\nto a one-click filter sidebar',
     meta: 'Document management · Redesign · Angular rebuild',
     summary:
       'I redesigned an internal document management app and rebuilt its front end in Angular. The biggest change is how people find documents: instead of opening and closing a tree of groups, they tick the document types they want and get one table.',
-    heading: 'From a collapsible tree\nto a one-click filter sidebar',
     lede:
       'I redesigned an internal document management app and rebuilt its front end in Angular. The biggest change is how people find documents. Instead of opening and closing a tree of groups, they tick the document types they want and get one table. Along the way, editing stopped creating duplicate records, and every existing link kept working.',
     context: {
@@ -509,9 +489,9 @@ export const caseStudies: CaseStudy[] = [
     id: 'mas-inventory',
     number: '02',
     title: 'MAS Inventory — redesigning the sales team’s vehicle search',
+    heading: 'Redesigning the sales team’s vehicle search',
     meta: 'UX audit · Prototyping · Design system',
     summary: 'A 10-point UX audit of the sales team’s vehicle search, and four prototypes that fix it.',
-    status: 'In progress',
     problem:
       'Promo badges covered the vehicle photos, and the price sat a full card-width away from the vehicle name. Pricing details changed from card to card, and Stock numbers and VINs were grey fine print. The filter sidebar clipped its own counts and showed database codes like MAS_ON_BASE. Only about 2½ vehicles fit on screen.',
     approach:
@@ -726,6 +706,8 @@ export const caseStudies: CaseStudy[] = [
     id: 'design-system',
     number: '03',
     title: 'A design system for internal applications',
+    name: 'Design System',
+    heading: 'A design system for internal applications',
     meta: 'Design system · Angular · Claude AI',
     summary: 'One shared design system and Angular starter kit, now behind seven internal apps.',
     problem:
@@ -773,28 +755,6 @@ export const caseStudies: CaseStudy[] = [
           dsShot('app-activity', 'Activity', 'Tasks, documents, mail history and comments, in tabs with a segmented control.'),
         ],
       },
-    ],
-  },
-  {
-    id: 'vendor-disbursements',
-    number: '04',
-    title: 'Vendor Disbursements — redesigning the approval admin tools',
-    meta: 'Admin tools · Workflow · Redesign',
-    summary: 'Redesigning the tools admins use to move in-flight work and maintain the approval rules for vendor payments.',
-    status: 'In progress',
-    problem:
-      'When someone changes roles or leaves, admins move the work waiting on them and update the approval rules that route each vendor payment. The original screens did the job, but key states were easy to miss: disabled steps looked like faint text, an error that blocks every bulk change was one line of red text, and moving someone’s work and replacing them in the rules lived in two separate tools.',
-    approach:
-      'Redesigning each admin screen of Reassign Work and Bulk Rules & Tester on the company design system, one screen at a time against the original.',
-    result: 'In progress. Each redesigned screen appears next to its original below.',
-    screens: [
-      vdScreen(1, 'Reassign Work · Choose people', 'Pick whose work to move and who receives it. Everyone with work waiting is listed with counts by role.', 1497, 914, [1484, 911]),
-      vdScreen(2, 'Reassign Work · Review disbursements', 'Select the disbursements to move and give a reason that is saved in each disbursement’s history.', 1514, 871, [1481, 910]),
-      vdScreen(3, 'Reassign Work · Result', 'What moved, a CSV copy, and a reminder that the approval rules still send new work to the old person.', 1483, 865, [1478, 912]),
-      vdScreen(4, 'Bulk Rules · Replace user', 'Swap one person for another on every approval rule and level, with a preview before anything is saved.', 1501, 907, [1476, 911]),
-      vdScreen(5, 'Bulk Rules · Get the file', 'Download the ruleset as an Excel file, edit it, and upload it again.', 1476, 911, [1472, 911]),
-      vdScreen(6, 'Bulk Rules · Review changes', 'See what the uploaded file adds, changes and deletes before testing it.', 1489, 911, [1480, 911]),
-      vdScreen(7, 'Bulk Rules · Apply', 'Apply the tested change. A backup of the current rules is taken first.', 1498, 911, [1472, 910]),
     ],
   },
 ];

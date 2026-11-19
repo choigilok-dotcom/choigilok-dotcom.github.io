@@ -8,7 +8,7 @@
     <span class="eyebrow">
       Case study {{ cs.number }}
       @if (cs.heading) {
-        · {{ cs.title.split(' — ')[0] }}
+        · {{ cs.name ?? cs.title.split(' — ')[0] }}
       }
     </span>
     @if (cs.status) {
@@ -31,7 +31,7 @@
       </aside>
     </div>
   } @else {
-    <p class="lead" [class.lead-box]="cs.lede">{{ cs.lede ?? cs.summary }}</p>
+    <p class="lead lead-box">{{ cs.lede ?? cs.summary }}</p>
   }
   @if (cs.facts?.length) {
     <dl class="cs-facts">
@@ -154,10 +154,12 @@
           <span class="kicker">What I did</span>
           <p>{{ cs.approach }}</p>
         </div>
-        <div class="case-col case-result">
-          <span class="kicker kicker-success">The result</span>
-          <p>{{ cs.result }}</p>
-        </div>
+        @if (cs.result) {
+          <div class="case-col case-result">
+            <span class="kicker kicker-success">The result</span>
+            <p>{{ cs.result }}</p>
+          </div>
+        }
       </div>
 
       @if (cs.gallery; as gallery) {
