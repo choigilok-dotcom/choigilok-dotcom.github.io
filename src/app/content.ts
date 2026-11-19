@@ -288,69 +288,76 @@ export const caseStudies: CaseStudy[] = [
   {
     id: 'doctree',
     number: '01',
-    title: 'Document Management System — from a collapsible tree to a review-first workspace',
+    title: 'Document Management System — from a collapsible tree to a one-click filter sidebar',
     meta: 'Document management · Redesign · Angular rebuild',
     summary:
-      'Redesigning an internal document management app, then rebuilding its front end in Angular without breaking a single link.',
+      'I redesigned an internal document management app and rebuilt its front end in Angular. The biggest change is how people find documents: instead of opening and closing a tree of groups, they tick the document types they want and get one table.',
     problem:
-      'DocTree stores the documents attached to ERP records across 300+ document types. Reviewers open it from a link in the ERP, find a record’s documents, and accept or reject each one. The original showed documents as a collapsible tree grouped by type, so reviewers expanded groups one by one to find work. Status was shown by unlabelled icons, navigation hid in a drawer, editing created duplicate records, and failed uploads looked successful.',
+      'Document Management System stores the documents attached to ERP records across more than 300 document types. People open it from a link in the ERP, find the documents for one record, review them, and accept or reject each one. The original grouped documents in a collapsible tree, one group per type, so finding anything meant expanding a group, scanning it, collapsing it and moving to the next. Status icons had no labels, editing created duplicate records, and failed uploads looked successful.',
     approach:
-      'I worked in four stages, each shippable on its own: a redesign on the existing pages, replacing the paid grid component with my own table, rebuilding every page in Angular (strict TypeScript, signals) behind the same URLs, and a small design system. Before the rebuild I audited every behaviour of the old pages, so each one was kept or fixed on purpose.',
+      'A filter sidebar replaced the collapsible tree: every document type is a checkbox with its document count, and one click shows one type or several together in the same table. I worked in four stages, each shippable on its own: the redesign on the existing pages, replacing the paid grid with my own table, rebuilding every page in Angular (strict TypeScript, signals) behind the same URLs, and a small design system. Before the rebuild I audited every behaviour of the old pages, so each one was kept or fixed on purpose.',
     result:
-      'Reviewers start from what still needs review, with a status legend, filters in one place and an edit panel that updates records instead of duplicating them. All 11 Documents URLs still work, so ERP links are untouched. No paid UI libraries remain, the audit’s security gaps are fixed, and 1,056 automated tests cover the new code at 100% line, branch and function coverage.',
+      'Finding documents of two types went from a six-step open-scan-close loop to two steps: tick both types, read one table. Editing no longer creates duplicate records, all 11 Documents URLs still work so ERP links are untouched, and no paid UI libraries remain. 1,056 automated tests cover the new code at 100% line, branch and function coverage.',
     chips: ['UX research', 'Interaction design', 'Angular', 'TypeScript', 'Tailwind CSS', 'Design system', 'Testing'],
     screens: [
+      {
+        title: 'Biggest improvement · Finding documents: from opening and closing groups to ticking a box',
+        caption:
+          'Before, finding documents of two types took six steps: find the first type’s group in the tree, expand it, scan it, collapse it, find the next group, and keep track of which groups you had already checked. Now every document type is a checkbox with its count, alongside text search and a date range. Tick both types and read one table. People choose what to see instead of digging for it, saving clicks, scrolling and memory.',
+        before: dtShot('before-search-results', 'Original · Collapsible tree', 'One group per document type, opened and closed by hand.'),
+        after: dtShot('after-search-results', 'Redesign · Filter sidebar', 'Every document type is a checkbox with a count. Tick one or several.'),
+        extras: [
+          dtShot('after-sidebar-collapsed', 'New · Collapsible sidebar', 'Need more room? The sidebar folds to a thin strip and stays that way next visit.'),
+        ],
+      },
+      {
+        title: 'Documents · The table didn’t say what needed review',
+        caption:
+          'Status was shown by unlabelled icons, including two different ✕ marks, and nothing separated documents waiting for review from finished ones. Columns ran off the right edge with no way to hide them. Now tabs split documents by review state with counts (To Review 43, Rejected 8, Accepted 6, All 57), a legend names every status, the first columns stay put when scrolling, and a Columns menu hides any column except Document.',
+        before: dtShot('before-search-results', 'Original · Status icons and columns', 'Unlabelled status icons; columns cut off on the right.'),
+        after: dtShot('after-columns-menu', 'Redesign · Review tabs and Columns menu', 'Review-state tabs with counts, a legend and a Columns menu.'),
+      },
       dtPair(
         'nav-menu',
-        'Every page · Navigation',
-        'Pages were hidden in a side drawer, the header held four buttons in four colours and a repeated title. Navigation now lives in the header as Home, Administration and Account menus, and each role has a one-line description.',
+        'Every page · Navigation was hidden and the header was noisy',
+        'Pages were hidden in a side drawer, the header held four buttons in four colours, and the title repeated itself. Navigation now lives in the header as Home, Administration and Account menus, the current section is underlined, and each role has a one-line description such as “Restricted to assigned types”.',
       ),
       dtPair(
         'home',
-        'Home · Search',
-        'The form was split into four boxed groups and the Search button sat below the fold on a laptop. Now one card with labelled sections, with Search always in view at the top right.',
-      ),
-      dtPair(
-        'search-results',
-        'Documents · Review table',
-        'Documents were nested under collapsible type groups, with unlabelled status icons and raw keys like customer_account_id. Now one flat table with review-state tabs and counts, a status legend, readable labels and frozen first columns.',
-        [
-          dtShot('after-sidebar-collapsed', 'New · Collapsible filters', 'Search, a date range and a document-type checklist with counts in one sidebar. It collapses to a strip and the browser remembers the choice.'),
-          dtShot('after-columns-menu', 'New · Columns menu', 'Show or hide any column except Document, so wide tables can be narrowed.'),
-        ],
+        'Home · The search form buried its main action',
+        'The form was split into four boxed groups and the Submit button sat below the fold on a laptop. Now one card with labelled sections and helper text, with Search always in view at the top right.',
       ),
       dtPair(
         'edit',
-        'Documents · Edit',
-        'The pencil opened a context menu over the status column, and "Add Document Properties" opened an empty form that saved a duplicate record. Now a side panel with pre-filled Document Type, Status and Properties sections, each with its own Save that updates the existing record.',
-        [dtShot('before-properties', 'Original · Properties form', 'The original properties form opened empty, and saving it created a second record.')],
+        'Documents · Editing covered the table and saved duplicate records',
+        'The pencil opened a context menu over the status column, and “Add Document Properties” opened an empty form that saved a second record instead of updating the first. I found this in an audit before the rebuild. Now one side panel next to the table shows the file details, then Document Type, Status and Document Properties, each pre-filled with its own Save that updates the existing record.',
+        [dtShot('before-properties', 'Original · Properties form', 'Step 2: “Add Document Properties” opens an empty form; saving it adds a duplicate record.')],
         true,
       ),
       dtPair(
         'upload',
-        'Documents · Upload',
-        'The dialog scrolled inside itself, the File field was out of view, and any server response closed it as if the upload worked. Now a compact form with File first; a failed upload keeps the dialog open and says why.',
-        [dtShot('after-upload-type-picker', 'New · Document type picker', 'A searchable picker replaces a plain dropdown of 300+ document types.')],
+        'Documents · Uploads looked successful even when they failed',
+        'The dialog scrolled inside itself, the File field was out of view, the type was a plain dropdown of about 300 options, and any server response closed the dialog as if the upload had worked. Now a compact form with File first and a searchable type picker; a failed upload keeps the dialog open and says why.',
+        [dtShot('after-upload-type-picker', 'New · Document type picker', 'A searchable picker for 300+ document types.')],
       ),
       dtPair(
         'admin-home',
-        'Administration · Landing page',
-        'A large green tile sat beside three blue buttons, with nothing saying what each managed. Now two matching cards, each with a one-line description.',
+        'Administration · The landing page didn’t explain itself',
+        'A large green tile sat beside three blue buttons in a different style, with nothing saying what each managed. Now two matching cards, each with a one-line description, so administrators can tell the options apart before clicking.',
       ),
       dtPair(
         'document-types',
-        'Administration · Document types',
-        'Filter icons on every column but no record count and no visible way to add an entry. Now a search box, "306 out of 306", Columns and Add buttons, in the same table style as Documents.',
-      ),
-      dtPair(
-        'role-mapping',
-        'Administration · Role mapping',
-        'The same grid issues, plus a misspelled "Acccess Level" header. Now sortable headers and the shared table style, so there is one table to learn.',
+        'Administration · Admin tables had no count, no Add button and a typo',
+        'The grids had a filter icon on every column but no record count, no visible way to add an entry, and one header read “Acccess Level”. Now a search box, a record count (“306 out of 306”), Columns and Add buttons, sortable headers and the same table style as Documents, so there is one table to learn.',
+        [
+          dtShot('before-role-mapping', 'Original · Role mapping', 'Role mapping, with “Acccess Level”.'),
+          dtShot('after-role-mapping', 'Redesign · Role mapping', 'The same table style as Documents.'),
+        ],
       ),
       {
-        title: 'People without a role · No access',
+        title: 'People without a role · A blank “Forbidden” page for new users',
         caption:
-          'Someone who signed in without a DocTree role got a blank page with the single word "Forbidden". Now a card explains the account has no role yet and links back to Home.',
+          'Someone who signed in without a Document Management System role got a blank page with the single word “Forbidden”. Now a card says the account does not have a role yet and links back to Home, so it no longer looks like a crash.',
         beforeNote: 'A blank page with only the word “Forbidden”',
         after: dtShot('after-no-access', 'Redesign · No access', 'A card that explains what happened, with a way back to Home.'),
       },
