@@ -1,6 +1,6 @@
 import { Component, ElementRef, computed, input, signal, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { GalleryGroup, ScreenPair, Shot, caseStudies, profile } from '../content';
+import { CaseContext, GalleryGroup, ScreenPair, Shot, caseStudies, profile } from '../content';
 
 /** One case study page. The route passes the case id through `data.id`. */
 @Component({
@@ -81,6 +81,12 @@ export class CaseStudy {
         (s): s is Shot => !!s,
       ),
     );
+  }
+
+  /** Plain-text version of the context flow for screen readers. */
+  protected flowSummary(ctx: CaseContext): string {
+    const steps = (ctx.flow ?? []).map((s) => s.title).join(', then ');
+    return ctx.roles ? `${steps}. ${ctx.roles.label}.` : `${steps}.`;
   }
 
   /** Every gallery image of a case study, in page order. */

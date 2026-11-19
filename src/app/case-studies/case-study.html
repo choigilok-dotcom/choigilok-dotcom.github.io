@@ -5,15 +5,143 @@
     All case studies
   </a>
   <div class="cs-hero-top">
-    <span class="eyebrow">Case study {{ cs.number }}</span>
+    <span class="eyebrow">
+      Case study {{ cs.number }}
+      @if (cs.heading) {
+        · {{ cs.title.split(' — ')[0] }}
+      }
+    </span>
     @if (cs.status) {
       <span class="case-status">{{ cs.status }}</span>
     }
   </div>
-  <h1>{{ cs.title }}</h1>
-  <p class="lead">{{ cs.summary }}</p>
-  <span class="case-meta">{{ cs.meta }}</span>
+  <h1 [class.cs-heading]="cs.heading">{{ cs.heading ?? cs.title }}</h1>
+  @if (cs.keyChange; as kc) {
+    <div class="cs-intro">
+      <p class="lead">{{ cs.lede ?? cs.summary }}</p>
+      <aside class="key-change" aria-labelledby="key-change-label">
+        <span class="kicker key-change-label" id="key-change-label">
+          <span class="key-change-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M9 18h6" /><path d="M10 22h4" /><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z" /></svg>
+          </span>
+          Core UX change
+        </span>
+        <p><strong>{{ kc.lead }}</strong> {{ kc.text }}</p>
+        <a [routerLink]="[]" fragment="screen-1">{{ kc.link }}</a>
+      </aside>
+    </div>
+  } @else {
+    <p class="lead" [class.lead-box]="cs.lede">{{ cs.lede ?? cs.summary }}</p>
+  }
+  @if (cs.facts?.length) {
+    <dl class="cs-facts">
+      @for (f of cs.facts; track f.label) {
+        <div>
+          <dt class="kicker">{{ f.label }}</dt>
+          <dd>{{ f.value }}</dd>
+        </div>
+      }
+    </dl>
+  } @else if (!cs.heading) {
+    <span class="case-meta">{{ cs.meta }}</span>
+  }
+  @if (cs.context; as ctx) {
+    <div class="cs-stages">
+      <p class="cs-stages-intro">{{ ctx.stagesIntro }}</p>
+      <ol class="stages">
+        @for (stage of ctx.stages; track stage.title; let i = $index) {
+          <li>
+            <span class="stage-num">Stage {{ i + 1 }}</span>
+            <strong>{{ stage.title }}</strong>
+            <span class="stage-date">{{ stage.date }}</span>
+            <p>{{ stage.text }}</p>
+          </li>
+        }
+      </ol>
+    </div>
+  }
+  @if (cs.heroShot; as hero) {
+    <button type="button" class="shot cs-hero-shot" (click)="openShot([hero], hero)">
+      <span class="shot-frame">
+        <img [src]="hero.src" [alt]="hero.label + ': ' + hero.caption" [width]="hero.width" [height]="hero.height" />
+      </span>
+      <span class="pair-extra-caption"><span class="proto-side-label proto-side-new">Redesign</span> {{ hero.caption }}</span>
+    </button>
+  }
 </section>
+
+@if (cs.context; as ctx) {
+<section class="container cs-context" aria-labelledby="cs-context-title">
+  <div class="cs-context-grid" [class.cs-context-single]="!ctx.flow">
+    <div class="cs-context-text">
+      <span class="eyebrow">Context</span>
+      <h2 id="cs-context-title">{{ ctx.heading }}</h2>
+      @for (para of ctx.paragraphs; track $index) {
+        <p>{{ para }}</p>
+      }
+    </div>
+    @if (ctx.flow; as flow) {
+    <figure class="flowmap" role="img" [attr.aria-label]="'How people use the app: ' + flowSummary(ctx)">
+      @for (step of flow; track step.title; let last = $last) {
+        <div class="fm-step">
+          <span class="fm-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              @switch (step.icon) {
+                @case ('record') {
+                  <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" /><path d="M9 13h6" /><path d="M9 17h6" />
+                }
+                @case ('tree') {
+                  <path d="M4 4v14" /><path d="M4 8h6" /><path d="M4 16h6" /><rect x="11" y="5" width="9" height="6" rx="1" /><rect x="11" y="13" width="9" height="6" rx="1" />
+                }
+                @case ('review') {
+                  <rect x="5" y="4" width="14" height="17" rx="2" /><path d="M9 4V3h6v1" /><path d="m9 13 2 2 4-4" />
+                }
+              }
+            </svg>
+          </span>
+          <div>
+            <b>{{ step.title }}</b>
+            @if (step.sub) {
+              <span class="fm-sub">{{ step.sub }}</span>
+            }
+            @if (step.outcomes) {
+              <span class="fm-outcomes">
+                <span class="fm-ok">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m8 12 3 3 5-6" /></svg>
+                  Accepted
+                </span>
+                <span class="fm-bad">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m9 9 6 6" /><path d="m15 9-6 6" /></svg>
+                  Rejected
+                </span>
+              </span>
+            }
+          </div>
+        </div>
+        @if (!last) {
+          <div class="fm-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14" /><path d="m6 13 6 6 6-6" /></svg>
+          </div>
+        }
+      }
+      @if (ctx.roles; as roles) {
+      <div class="fm-roles">
+        <span class="fm-roles-label">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4" /><path d="M2 21a7 7 0 0 1 11-5.7" /><path d="M18 13l4 1.5v3c0 2-1.7 3.4-4 4-2.3-.6-4-2-4-4v-3z" /></svg>
+          {{ roles.label }}
+        </span>
+        <span class="fm-chips">
+          @for (chip of roles.chips; track chip) {
+            <span>{{ chip }}</span>
+          }
+        </span>
+      </div>
+      }
+    </figure>
+    }
+  </div>
+</section>
+}
 
 <div class="container cs-list">
     <article class="card case">
@@ -70,12 +198,84 @@
           <h3 class="case-part-title">Each screen: the original and my redesign</h3>
           <ol class="audit">
             @for (pair of screens; track pair.title; let i = $index) {
-              <li class="audit-item">
+              <li class="audit-item" [id]="'screen-' + (i + 1)">
                 <h4 class="audit-title">
                   <span class="audit-num">{{ i + 1 }}</span>
                   {{ pair.title }}
                 </h4>
-                <p class="pair-caption">{{ pair.caption }}</p>
+                @if (pair.caption) {
+                  <p class="pair-caption">{{ pair.caption }}</p>
+                }
+                @if (pair.featured && pair.notes && pair.steps) {
+                  <div class="story">
+                    @if (pair.before; as before) {
+                      <div class="story-row">
+                        <button type="button" class="shot" (click)="openShot(screenShots(screens), before)">
+                          <span class="shot-frame">
+                            <img [src]="before.src" [alt]="before.label" [width]="before.width" [height]="before.height" loading="lazy" />
+                          </span>
+                          <span class="pair-extra-caption"><span class="proto-side-label">Original</span> {{ before.caption }}</span>
+                        </button>
+                        <div class="story-text">
+                          <div class="case-col">
+                            <span class="kicker">The issue</span>
+                            <p>{{ pair.notes!.issue }}</p>
+                          </div>
+                          <div class="pair-steps-col">
+                            <span class="kicker">Before: {{ pair.steps!.task }}</span>
+                            <ol>
+                              @for (step of pair.steps!.before; track $index) {
+                                <li>{{ step }}</li>
+                              }
+                            </ol>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                    @if (pair.after; as after) {
+                      <div class="story-row">
+                        <button type="button" class="shot" (click)="openShot(screenShots(screens), after)">
+                          <span class="shot-frame">
+                            <img [src]="after.src" [alt]="after.label" [width]="after.width" [height]="after.height" loading="lazy" />
+                          </span>
+                          <span class="pair-extra-caption"><span class="proto-side-label proto-side-new">Redesign</span> {{ after.caption }}</span>
+                        </button>
+                        <div class="story-text">
+                          <div class="case-col">
+                            <span class="kicker kicker-accent">What I changed</span>
+                            <p>{{ pair.notes!.changed }}</p>
+                          </div>
+                          <div class="pair-steps-col pair-steps-after">
+                            <span class="kicker kicker-accent">After: the same task</span>
+                            <ol>
+                              @for (step of pair.steps!.after; track $index) {
+                                <li>{{ step }}</li>
+                              }
+                            </ol>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                    @for (extra of pair.extras ?? []; track extra.src; let last = $last) {
+                      <div class="story-row">
+                        <button type="button" class="shot" (click)="openShot(screenShots(screens), extra)">
+                          <span class="shot-frame">
+                            <img [src]="extra.src" [alt]="extra.label" [width]="extra.width" [height]="extra.height" loading="lazy" />
+                          </span>
+                          <span class="pair-extra-caption"><span class="proto-side-label proto-side-new">New</span> {{ extra.caption }}</span>
+                        </button>
+                        <div class="story-text">
+                          @if (last) {
+                            <div class="case-col">
+                              <span class="kicker">Why</span>
+                              <p>{{ pair.notes!.why }}</p>
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    }
+                  </div>
+                } @else {
                 @if (pair.stackRedesign) {
                   <div class="proto-compare">
                     @for (orig of [pair.before].concat(pair.extras ?? []); track $index) {
@@ -147,6 +347,43 @@
                       }
                     </div>
                   }
+                }
+                @if (pair.notes; as n) {
+                  <div class="case-grid pair-notes">
+                    <div class="case-col">
+                      <span class="kicker">The issue</span>
+                      <p>{{ n.issue }}</p>
+                    </div>
+                    <div class="case-col">
+                      <span class="kicker">What I changed</span>
+                      <p>{{ n.changed }}</p>
+                    </div>
+                    <div class="case-col case-result">
+                      <span class="kicker kicker-success">Why</span>
+                      <p>{{ n.why }}</p>
+                    </div>
+                  </div>
+                }
+                @if (pair.steps; as st) {
+                  <div class="pair-steps">
+                    <div class="pair-steps-col">
+                      <span class="kicker">Before: {{ st.task }} · {{ st.before.length }} steps</span>
+                      <ol>
+                        @for (step of st.before; track $index) {
+                          <li>{{ step }}</li>
+                        }
+                      </ol>
+                    </div>
+                    <div class="pair-steps-col pair-steps-after">
+                      <span class="kicker kicker-success">After: the same task · {{ st.after.length }} steps</span>
+                      <ol>
+                        @for (step of st.after; track $index) {
+                          <li>{{ step }}</li>
+                        }
+                      </ol>
+                    </div>
+                  </div>
+                }
                 }
               </li>
             }

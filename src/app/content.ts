@@ -83,6 +83,18 @@ export interface CaseStudy {
   meta: string;
   /** One line for the home page preview card. */
   summary: string;
+  /** Case study page headline; falls back to `title`. A newline forces a line break on wide screens. */
+  heading?: string;
+  /** Longer intro for the case study page; falls back to `summary`. */
+  lede?: string;
+  /** Callout beside the lede that names the headline change and links to the first screen. */
+  keyChange?: { lead: string; text: string; link: string };
+  /** Role, stack, timeline and team, shown in a row under the intro. */
+  facts?: { label: string; value: string }[];
+  /** Large screenshot at the end of the page header. */
+  heroShot?: Shot;
+  /** Context section: who uses the app, a flow diagram and the stages of the work. */
+  context?: CaseContext;
   problem: string;
   approach: string;
   result: string;
@@ -99,9 +111,27 @@ export interface CaseStudy {
   screens?: ScreenPair[];
 }
 
+export interface CaseContext {
+  heading: string;
+  paragraphs: string[];
+  /** Steps of the optional flow diagram, top to bottom. */
+  flow?: { icon: 'record' | 'tree' | 'review'; title: string; sub?: string; outcomes?: boolean }[];
+  roles?: { label: string; chips: string[] };
+  /** Lead-in line shown above the stage cards. */
+  stagesIntro: string;
+  stages: { title: string; date: string; text: string }[];
+}
+
 export interface ScreenPair {
   title: string;
-  caption: string;
+  /** Short intro under the title. Optional when `notes` carry the story. */
+  caption?: string;
+  /** The issue, what changed and why, shown in three columns under the screenshots. */
+  notes?: { issue: string; changed: string; why: string };
+  /** A task walked through before and after, shown as two numbered lists. */
+  steps?: { task: string; before: string[]; after: string[] };
+  /** Highlight this pair as the headline change. */
+  featured?: boolean;
   /** Missing when there is no screenshot of the original; `beforeNote` describes it instead. */
   before?: Shot;
   beforeNote?: string;
@@ -253,11 +283,18 @@ const dtShot = (file: string, label: string, caption: string): Shot => ({
   width: 2162,
   height: 1352,
 });
-const dtPair = (name: string, title: string, caption: string, extras?: Shot[], stackRedesign?: boolean): ScreenPair => ({
+const dtPair = (
+  name: string,
+  title: string,
+  notes: { issue: string; changed: string; why: string },
+  shotCaptions: [string, string],
+  extras?: Shot[],
+  stackRedesign?: boolean,
+): ScreenPair => ({
   title,
-  caption,
-  before: dtShot(`before-${name}`, `Original · ${title}`, caption),
-  after: dtShot(`after-${name}`, `Redesign · ${title}`, caption),
+  notes,
+  before: dtShot(`before-${name}`, `Original · ${title}`, shotCaptions[0]),
+  after: dtShot(`after-${name}`, `Redesign · ${title}`, shotCaptions[1]),
   extras,
   stackRedesign,
 });
@@ -292,6 +329,40 @@ export const caseStudies: CaseStudy[] = [
     meta: 'Document management · Redesign · Angular rebuild',
     summary:
       'I redesigned an internal document management app and rebuilt its front end in Angular. The biggest change is how people find documents: instead of opening and closing a tree of groups, they tick the document types they want and get one table.',
+    heading: 'From a collapsible tree\nto a one-click filter sidebar',
+    lede:
+      'I redesigned an internal document management app and rebuilt its front end in Angular. The biggest change is how people find documents. Instead of opening and closing a tree of groups, they tick the document types they want and get one table. Along the way, editing stopped creating duplicate records, and every existing link kept working.',
+    context: {
+      heading: 'The app and the people who use it',
+      paragraphs: [
+        'Document Management System stores the documents attached to records in the company’s ERP system, across more than 300 document types. People open it from a link in the ERP, find the documents for one record, review them, and accept or reject each one. Administrators decide which roles can see which document types.',
+        'Access is role-based. Some people can see every document type, others only the types assigned to them, and a small group manages the settings. The original interface was built on a commercial grid component as a collapsible tree: documents grouped by type, each group expanded by hand.',
+      ],
+      stagesIntro: 'I worked in four stages, each shippable on its own:',
+      stages: [
+        {
+          title: 'Redesign',
+          date: 'Sept 3 – Oct 14',
+          text: 'Filter sidebar and flat Documents table in place of the tree, plus new navigation and page frame, built in the existing server-rendered pages.',
+        },
+        {
+          title: 'Remove the paid grid',
+          date: 'Oct 15',
+          text: 'Replaced the commercial component library with my own table, so no license key or vendor CDN.',
+        },
+        {
+          title: 'Move to Angular',
+          date: 'Oct 15 – Oct 21',
+          text: 'Rebuilt every page as typed components behind the same URLs, and fixed the bugs an audit turned up.',
+        },
+        { title: 'Design system', date: 'Oct 27', text: 'Design tokens and one shared style for buttons, cards, dialogs and search boxes.' },
+      ],
+    },
+    heroShot: dtShot(
+      'after-search-results',
+      'The Documents page today',
+      'Document types are checkboxes in the sidebar on the left, and the results fill one table.',
+    ),
     problem:
       'Document Management System stores the documents attached to ERP records across more than 300 document types. People open it from a link in the ERP, find the documents for one record, review them, and accept or reject each one. The original grouped documents in a collapsible tree, one group per type, so finding anything meant expanding a group, scanning it, collapsing it and moving to the next. Status icons had no labels, editing created duplicate records, and failed uploads looked successful.',
     approach:
@@ -302,53 +373,119 @@ export const caseStudies: CaseStudy[] = [
     screens: [
       {
         title: 'Biggest improvement · Finding documents: from opening and closing groups to ticking a box',
-        caption:
-          'Before, finding documents of two types took six steps: find the first type’s group in the tree, expand it, scan it, collapse it, find the next group, and keep track of which groups you had already checked. Now every document type is a checkbox with its count, alongside text search and a date range. Tick both types and read one table. People choose what to see instead of digging for it, saving clicks, scrolling and memory.',
-        before: dtShot('before-search-results', 'Original · Collapsible tree', 'One group per document type, opened and closed by hand.'),
+        featured: true,
+        before: dtShot('before-search-results', 'Original · Collapsible tree', 'A collapsible tree: one group per document type, opened and closed by hand.'),
         after: dtShot('after-search-results', 'Redesign · Filter sidebar', 'Every document type is a checkbox with a count. Tick one or several.'),
         extras: [
           dtShot('after-sidebar-collapsed', 'New · Collapsible sidebar', 'Need more room? The sidebar folds to a thin strip and stays that way next visit.'),
         ],
+        notes: {
+          issue:
+            'The original page grouped documents in a collapsible tree, one group per document type. To find something, people expanded a group, scanned it, collapsed it and moved to the next one. Looking at two or three types meant keeping several groups open and scrolling between them. Every search cost clicks and memory: which group was it in, and which groups had I already checked?',
+          changed:
+            'I replaced the tree with a filter sidebar beside one flat table. Every document type is a checkbox, with its document count next to it. Tick one type to see only those documents, or tick several to see them together. Text search and a date range sit in the same sidebar. When the table needs more width, the sidebar collapses to a thin strip, and the browser remembers that choice.',
+          why:
+            'People choose what they want to see instead of digging for it. One click replaces an open-scan-close loop, the counts show where documents are before anyone clicks, and the table can take the full width whenever it’s needed. It saves physical effort (clicks and scrolling) and mental effort (remembering where you’ve been).',
+        },
+        steps: {
+          task: 'Finding documents of two types',
+          before: [
+            'Find the first type’s group in the tree.',
+            'Expand it and scan the rows.',
+            'Collapse it, or scroll past it.',
+            'Find the second type’s group.',
+            'Expand it and scan again.',
+            'Repeat for every other type, keeping track of which groups you’ve checked.',
+          ],
+          after: ['Tick both types in the sidebar.', 'Read one table.'],
+        },
       },
       {
         title: 'Documents · The table didn’t say what needed review',
-        caption:
-          'Status was shown by unlabelled icons, including two different ✕ marks, and nothing separated documents waiting for review from finished ones. Columns ran off the right edge with no way to hide them. Now tabs split documents by review state with counts (To Review 43, Rejected 8, Accepted 6, All 57), a legend names every status, the first columns stay put when scrolling, and a Columns menu hides any column except Document.',
         before: dtShot('before-search-results', 'Original · Status icons and columns', 'Unlabelled status icons; columns cut off on the right.'),
         after: dtShot('after-columns-menu', 'Redesign · Review tabs and Columns menu', 'Review-state tabs with counts, a legend and a Columns menu.'),
+        notes: {
+          issue:
+            'Status was shown by unlabelled icons, including two different ✕ marks. Nothing separated documents still waiting for review from finished ones. Columns ran off the right edge, there was no way to hide any of them, and raw keys such as customer_account_id appeared in a corner table.',
+          changed:
+            'Tabs split documents by review state with counts: To Review 43, Rejected 8, Accepted 6, All 57. A legend names each status icon, and the page header uses readable labels. The first columns stay in place when the table scrolls sideways, empty cells show a dash, and a Columns menu (“11 of 11”) hides any column except Document.',
+          why: 'Reviewers start from “what still needs review”, every status has a name, and people decide how much table they need.',
+        },
       },
       dtPair(
         'nav-menu',
         'Every page · Navigation was hidden and the header was noisy',
-        'Pages were hidden in a side drawer, the header held four buttons in four colours, and the title repeated itself. Navigation now lives in the header as Home, Administration and Account menus, the current section is underlined, and each role has a one-line description such as “Restricted to assigned types”.',
+        {
+          issue:
+            'Pages were hidden in a side drawer. The header held four buttons in four colours, and the title repeated itself: “OMSG Document Management Service: OMSG DMS: Home”. The signed-in email floated below the header.',
+          changed:
+            'Navigation moved into the header as Home, Administration and Account menus. The current section is underlined and the page title sits next to the logo. Each role in the menu has a one-line description, such as “Restricted to assigned types”.',
+          why: 'People see where they are and what their role allows without opening anything.',
+        },
+        ['Pages live in a hamburger drawer.', 'Menus in the header, with role descriptions.'],
       ),
       dtPair(
         'home',
         'Home · The search form buried its main action',
-        'The form was split into four boxed groups and the Submit button sat below the fold on a laptop. Now one card with labelled sections and helper text, with Search always in view at the top right.',
+        {
+          issue:
+            'The form was split into four boxed groups under a large heading, and the Submit button was below the fold on a laptop screen.',
+          changed: 'One card with labelled sections and helper text next to each label. The Search button sits at the top right of the card.',
+          why: 'The one action on the page is always visible, and there is less to scroll past.',
+        },
+        ['Submit sits below the fold.', 'One card, Search always in view.'],
       ),
       dtPair(
         'edit',
         'Documents · Editing covered the table and saved duplicate records',
-        'The pencil opened a context menu over the status column, and “Add Document Properties” opened an empty form that saved a second record instead of updating the first. I found this in an audit before the rebuild. Now one side panel next to the table shows the file details, then Document Type, Status and Document Properties, each pre-filled with its own Save that updates the existing record.',
+        {
+          issue:
+            'The pencil icon opened a context menu titled “Menu” that covered the status column. “Add Document Properties” opened an empty form, and saving it created a second record instead of updating the first. I found this in an audit of every behaviour on the page before the rebuild.',
+          changed:
+            'A side panel shows the file name, upload date and uploader, then three sections: Document Type, Status (with the current status shown) and Document Properties. Each has its own Save. Fields come pre-filled, and Save updates the existing record.',
+          why: 'People edit what they can see, and no duplicate records pile up unnoticed.',
+        },
+        [
+          'Step 1: the pencil opens a “Menu” over the status column.',
+          'One side panel next to the table: file details, then Document Type, Status and Document Properties, each pre-filled with its own Save.',
+        ],
         [dtShot('before-properties', 'Original · Properties form', 'Step 2: “Add Document Properties” opens an empty form; saving it adds a duplicate record.')],
         true,
       ),
       dtPair(
         'upload',
         'Documents · Uploads looked successful even when they failed',
-        'The dialog scrolled inside itself, the File field was out of view, the type was a plain dropdown of about 300 options, and any server response closed the dialog as if the upload had worked. Now a compact form with File first and a searchable type picker; a failed upload keeps the dialog open and says why.',
+        {
+          issue:
+            'The upload dialog scrolled inside itself, the File field was below its fold, and the type was a plain dropdown of about 300 options. Any server response closed the dialog as if the upload had worked.',
+          changed:
+            'A compact form with File first and a searchable type picker. When an upload fails, the dialog stays open and says why. The server enforces a list of allowed file types and a 10 MB limit.',
+          why: 'Fewer steps, and people know whether their document actually arrived.',
+        },
+        ['A tall dialog; the File field is out of view.', 'A compact form with File first.'],
         [dtShot('after-upload-type-picker', 'New · Document type picker', 'A searchable picker for 300+ document types.')],
       ),
       dtPair(
         'admin-home',
-        'Administration · The landing page didn’t explain itself',
-        'A large green tile sat beside three blue buttons in a different style, with nothing saying what each managed. Now two matching cards, each with a one-line description, so administrators can tell the options apart before clicking.',
+        'Administration · The admin landing page didn’t explain itself',
+        {
+          issue: 'A large green tile sat next to three blue buttons in a different style, with nothing to say what each one managed.',
+          changed: 'Two matching cards, each with a one-line description and the same button style.',
+          why: 'Administrators can tell the options apart before clicking.',
+        },
+        ['One green tile, three blue buttons.', 'Two matching cards with descriptions.'],
       ),
       dtPair(
         'document-types',
         'Administration · Admin tables had no count, no Add button and a typo',
-        'The grids had a filter icon on every column but no record count, no visible way to add an entry, and one header read “Acccess Level”. Now a search box, a record count (“306 out of 306”), Columns and Add buttons, sortable headers and the same table style as Documents, so there is one table to learn.',
+        {
+          issue:
+            'The grids had a filter icon on every column but no record count and no visible way to add an entry. One header read “Acccess Level”.',
+          changed:
+            'A search box, a record count (“306 out of 306”), Columns and Add buttons, sortable headers, and the same table style as the Documents page. The typo is gone.',
+          why: 'Admin pages work like the rest of the app, so there is one table to learn.',
+        },
+        ['Document types: filter icons, no count.', 'Search, “306 out of 306”, Columns and Add.'],
         [
           dtShot('before-role-mapping', 'Original · Role mapping', 'Role mapping, with “Acccess Level”.'),
           dtShot('after-role-mapping', 'Redesign · Role mapping', 'The same table style as Documents.'),
@@ -356,10 +493,13 @@ export const caseStudies: CaseStudy[] = [
       ),
       {
         title: 'People without a role · A blank “Forbidden” page for new users',
-        caption:
-          'Someone who signed in without a Document Management System role got a blank page with the single word “Forbidden”. Now a card says the account does not have a role yet and links back to Home, so it no longer looks like a crash.',
         beforeNote: 'A blank page with only the word “Forbidden”',
-        after: dtShot('after-no-access', 'Redesign · No access', 'A card that explains what happened, with a way back to Home.'),
+        after: dtShot('after-no-access', 'Redesign · No access', 'A card that explains what happened.'),
+        notes: {
+          issue: 'Someone who signed in without a Document Management System role got a blank page with the single word “Forbidden”.',
+          changed: 'A card that says the account does not have a Document Management System role yet, and a way back to Home.',
+          why: 'Anyone without access yet sees this page first. It now tells them what is wrong instead of looking like a crash.',
+        },
       },
     ],
   },
