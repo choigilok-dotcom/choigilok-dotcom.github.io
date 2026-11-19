@@ -3,13 +3,11 @@ import { RouterLink } from '@angular/router';
 import {
   apps,
   caseStudies,
-  experience,
   heroStats,
   platforms,
   principles,
   profile,
   skills,
-  showExperience,
   showSkills,
   websites,
 } from '../content';
@@ -32,8 +30,6 @@ export class Home {
   protected readonly platforms = platforms;
   protected readonly apps = apps;
   protected readonly caseStudies = caseStudies;
-  protected readonly experience = experience;
   protected readonly skills = skills;
-  protected readonly showExperience = showExperience;
   protected readonly showSkills = showSkills;
 }

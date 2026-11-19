@@ -154,9 +154,11 @@ export interface GalleryGroup {
 export interface Job {
   role: string;
   company: string;
+  location?: string;
   period: string;
-  summary?: string;
-  areas?: { title: string; text: string }[];
+  /** Full-time, Part-time, Internship… */
+  kind?: string;
+  bullets: string[];
 }
 
 export const profile = {
@@ -801,40 +803,50 @@ export const experience: Job[] = [
   {
     role: 'Front-End Developer / UX Designer',
     company: 'OMSC',
-    period: 'Apr 2014 – Present · Full-time',
-    areas: [
-      {
-        title: 'Websites & blogs',
-        text: 'Build and maintain two bilingual company sites and the Contentful CMS, plus 5+ company blogs including IAS, MAS and Relocate USA.',
-      },
-      {
-        title: 'Internal apps & intranet',
-        text: 'Designed and built 50+ internal applications, and built and maintain the company intranet on three platforms: WebSphere, SharePoint and Liferay (WildFly).',
-      },
-      {
-        title: 'UX & quality',
-        text: 'Established the company design system and starter kit; drive UX, accessibility and performance improvements with GA4, Clarity and Lighthouse.',
-      },
+    location: 'Long Island, NY',
+    period: 'April 2014 – Present',
+    bullets: [
+      'Lead UX engineering and front-end modernization of IAS and MAS websites using JavaScript, HTML5, and CSS3; launched IAS in Spanish and improved architecture, usability, and performance through GA4, Clarity, and Lighthouse analysis.',
+      'Design, develop, and maintain 50+ enterprise applications, including end-to-end UX and front-end development of seven major business applications.',
+      'Architected and built a company-wide design system with reusable UI components, standardized design patterns, interaction guidelines, and an Angular starter kit, adopted across seven applications.',
+      'Manage Contentful CMS architecture and content experiences, including content models, publishing workflows, and three corporate blog platforms (IAS, MAS, and Relocated USA).',
+      'Designed, developed, and modernized three corporate intranets using IBM WebSphere, SharePoint, and Liferay.',
+      'Integrate AI-assisted design and development workflows using Claude AI for UX exploration, prototyping, and UI engineering; previously developed the HDMilitary.com e-commerce platform using Magento.',
+    ],
+  },
+  {
+    role: 'UX Engineer & Frontend Developer',
+    company: 'Instigator',
+    location: 'New York, NY',
+    period: 'January 2012 – December 2013',
+    kind: 'Part-time',
+    bullets: [
+      'Designed and developed responsive, user-centered websites using HTML, CSS, JavaScript, jQuery, and Bootstrap, translating design concepts into functional web experiences.',
+      'Conducted UX research and usability evaluations, including surveys, design reviews, and card sorting; developed user personas, information architecture, and workflows, and validated designs through wireframes and interactive prototypes.',
     ],
   },
   {
     role: 'Assistant Professor',
-    company: 'Pratt Institute · New York',
-    period: 'Sep 2008 – May 2014 · Full-time',
-    summary:
-      'Introduced a course in IA and UX Design, teaching design briefs, user personas, card sorting, fast prototyping, wireframes and related design methods.',
+    company: 'Pratt Institute',
+    location: 'New York, NY',
+    period: 'August 2008 – May 2014',
+    kind: 'Full-time',
+    bullets: [
+      'Developed and introduced an Information Architecture and UX Design course, teaching user-centered design methods, including design briefs, personas, card sorting, prototyping, and wireframing.',
+      'Designed and taught web development courses covering HTML, CSS, XML, database design, WordPress, Drupal, PHP, MySQL, and Adobe Photoshop.',
+    ],
   },
   {
-    role: 'Front-End Developer',
-    company: 'Instigator · New York',
-    period: 'Jan 2012 – Dec 2013 · Part-time',
-    summary:
-      'Built a responsive website with HTML, CSS, JavaScript, jQuery and Bootstrap, and ran design reviews and user surveys to identify needs and expectations.',
+    role: 'Usability Specialist Intern',
+    company: 'ITAL, University of Texas at Austin',
+    period: 'January 2003 – June 2003',
+    kind: 'Internship',
+    bullets: [
+      'Conducted usability evaluations of The University of Texas website, developing test plans, assessing user interactions, and documenting findings to recommend UX improvements; produced captioned video content using QuickTime Pro and SMIL.',
+    ],
   },
 ];
 
-// Experience section is hidden for now. Set to true to show it again (section + nav link).
-export const showExperience = false;
 // Skills (Toolkit) section is hidden for now. Set to true to show it again (section + nav link).
 export const showSkills = false;
 

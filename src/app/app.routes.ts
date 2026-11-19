@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { CaseStudy } from './case-studies/case-study';
 import { caseStudies } from './content';
+import { Experience } from './experience/experience';
 import { Home } from './home/home';
 
 export const routes: Routes = [
@@ -13,5 +14,6 @@ export const routes: Routes = [
     title: `${cs.title.split(' — ')[0]} — Case study ${cs.number} — Gilok Choi`,
   })),
   { path: 'case-studies', redirectTo: `case-studies/${caseStudies[0].id}`, pathMatch: 'full' },
+  { path: 'experience', component: Experience, title: 'Experience — Gilok Choi' },
   { path: '**', redirectTo: '' },
 ];

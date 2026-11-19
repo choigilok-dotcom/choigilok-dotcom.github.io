@@ -1,0 +1,48 @@
+<section class="container cs-hero">
+  <a class="back-link" routerLink="/">
+    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5" /><path d="m11 18-6-6 6-6" /></svg>
+    Home
+  </a>
+  <span class="eyebrow">Experience</span>
+  <h1>From the classroom to production</h1>
+  <p class="lead">Research, teaching and 12+ years building enterprise web applications.</p>
+</section>
+
+<section class="container exp-list">
+  @for (job of experience; track job.role + job.company) {
+    <article class="job">
+      <div class="job-head">
+        <div>
+          <h2 class="job-role">{{ job.role }}</h2>
+          <div class="job-company">
+            {{ job.company }}
+            @if (job.location) {
+              <span aria-hidden="true">·</span> {{ job.location }}
+            }
+          </div>
+        </div>
+        <span class="job-period">
+          {{ job.period }}
+          @if (job.kind) {
+            · {{ job.kind }}
+          }
+        </span>
+      </div>
+      <ul class="job-bullets">
+        @for (b of job.bullets; track $index) {
+          <li>{{ b }}</li>
+        }
+      </ul>
+    </article>
+  }
+</section>
+
+<section class="container cs-end">
+  <p>Want the full picture?</p>
+  <div class="actions">
+    @if (resumeUrl) {
+      <a class="btn btn-dark" [href]="resumeUrl" target="_blank" rel="noopener">Résumé (PDF)</a>
+    }
+    <a class="btn btn-outline" [href]="'mailto:' + email">Email me</a>
+  </div>
+</section>
