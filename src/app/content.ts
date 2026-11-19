@@ -109,6 +109,8 @@ export interface ScreenPair {
   after?: Shot;
   /** Screens added by the redesign that have no original counterpart, shown under the pair. */
   extras?: Shot[];
+  /** Show the original and `extras` side by side, then the redesign full width below. */
+  stackRedesign?: boolean;
 }
 
 export interface GalleryGroup {
@@ -251,12 +253,13 @@ const dtShot = (file: string, label: string, caption: string): Shot => ({
   width: 2162,
   height: 1352,
 });
-const dtPair = (name: string, title: string, caption: string, extras?: Shot[]): ScreenPair => ({
+const dtPair = (name: string, title: string, caption: string, extras?: Shot[], stackRedesign?: boolean): ScreenPair => ({
   title,
   caption,
   before: dtShot(`before-${name}`, `Original · ${title}`, caption),
   after: dtShot(`after-${name}`, `Redesign · ${title}`, caption),
   extras,
+  stackRedesign,
 });
 
 const vd = 'images/vendor-disbursements/';
@@ -321,6 +324,7 @@ export const caseStudies: CaseStudy[] = [
         'Documents · Edit',
         'The pencil opened a context menu over the status column, and "Add Document Properties" opened an empty form that saved a duplicate record. Now a side panel with pre-filled Document Type, Status and Properties sections, each with its own Save that updates the existing record.',
         [dtShot('before-properties', 'Original · Properties form', 'The original properties form opened empty, and saving it created a second record.')],
+        true,
       ),
       dtPair(
         'upload',
