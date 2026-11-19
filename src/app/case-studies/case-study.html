@@ -69,7 +69,7 @@
         <section class="case-part">
           <h3 class="case-part-title">Each screen: the original and my redesign</h3>
           <ol class="audit">
-            @for (pair of screens; track pair.before.src; let i = $index) {
+            @for (pair of screens; track pair.title; let i = $index) {
               <li class="audit-item">
                 <h4 class="audit-title">
                   <span class="audit-num">{{ i + 1 }}</span>
@@ -77,18 +77,25 @@
                 </h4>
                 <p class="pair-caption">{{ pair.caption }}</p>
                 <div class="proto-compare">
-                  <button type="button" class="shot" (click)="openShot(screenShots(screens), pair.before)">
-                    <span class="shot-label proto-side-label">Original</span>
-                    <span class="shot-frame">
-                      <img
-                        [src]="pair.before.src"
-                        [alt]="pair.before.label"
-                        [width]="pair.before.width"
-                        [height]="pair.before.height"
-                        loading="lazy"
-                      />
-                    </span>
-                  </button>
+                  @if (pair.before; as before) {
+                    <button type="button" class="shot" (click)="openShot(screenShots(screens), before)">
+                      <span class="shot-label proto-side-label">Original</span>
+                      <span class="shot-frame">
+                        <img
+                          [src]="before.src"
+                          [alt]="before.label"
+                          [width]="before.width"
+                          [height]="before.height"
+                          loading="lazy"
+                        />
+                      </span>
+                    </button>
+                  } @else {
+                    <div class="shot shot-pending">
+                      <span class="shot-label proto-side-label">Original</span>
+                      <span class="shot-frame shot-frame-pending">{{ pair.beforeNote }}</span>
+                    </div>
+                  }
                   @if (pair.after; as after) {
                     <button type="button" class="shot" (click)="openShot(screenShots(screens), after)">
                       <span class="shot-label proto-side-label proto-side-new">Redesign</span>
@@ -103,6 +110,21 @@
                     </div>
                   }
                 </div>
+                @if (pair.extras?.length) {
+                  <div class="proto-compare pair-extras">
+                    @for (extra of pair.extras; track extra.src) {
+                      <button type="button" class="shot" (click)="openShot(screenShots(screens), extra)">
+                        <span class="shot-label proto-side-label" [class.proto-side-new]="!extra.label.startsWith('Original')">
+                          {{ extra.label.split(' · ')[0] }}
+                        </span>
+                        <span class="shot-frame">
+                          <img [src]="extra.src" [alt]="extra.label" [width]="extra.width" [height]="extra.height" loading="lazy" />
+                        </span>
+                        <span class="pair-extra-caption">{{ extra.caption }}</span>
+                      </button>
+                    }
+                  </div>
+                }
               </li>
             }
           </ol>

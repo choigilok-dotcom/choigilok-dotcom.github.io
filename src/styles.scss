@@ -1299,6 +1299,22 @@ h2 {
   cursor: default;
 }
 
+.pair-extras {
+  margin-top: 4px;
+}
+
+.pair-extra-caption {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  text-align: left;
+}
+
+/* Four case studies read better as a 2 × 2 grid than 3 + 1. */
+.section-cases .grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
+}
+
 .shot-frame.shot-frame-pending {
   display: grid;
   place-items: center;

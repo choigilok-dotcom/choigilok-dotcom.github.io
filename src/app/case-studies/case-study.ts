@@ -76,7 +76,7 @@ export class CaseStudy {
 
   /** Every original and redesign screenshot, in page order. */
   protected screenShots(screens: ScreenPair[]): Shot[] {
-    return screens.flatMap((p) => (p.after ? [p.before, p.after] : [p.before]));
+    return screens.flatMap((p) => [p.before, p.after, ...(p.extras ?? [])].filter((s): s is Shot => !!s));
   }
 
   /** Every gallery image of a case study, in page order. */

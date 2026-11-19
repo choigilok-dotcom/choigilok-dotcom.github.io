@@ -102,9 +102,13 @@ export interface CaseStudy {
 export interface ScreenPair {
   title: string;
   caption: string;
-  before: Shot;
+  /** Missing when there is no screenshot of the original; `beforeNote` describes it instead. */
+  before?: Shot;
+  beforeNote?: string;
   /** Missing until the new design is ready. */
   after?: Shot;
+  /** Screens added by the redesign that have no original counterpart, shown under the pair. */
+  extras?: Shot[];
 }
 
 export interface GalleryGroup {
@@ -236,6 +240,23 @@ const dsShot = (file: string, label: string, caption: string, width = 1440, heig
   caption,
   width,
   height,
+});
+
+const dt = 'images/doctree/';
+/** All DocTree screenshots are 2162 × 1352. */
+const dtShot = (file: string, label: string, caption: string): Shot => ({
+  src: `${dt}${file}.webp`,
+  label,
+  caption,
+  width: 2162,
+  height: 1352,
+});
+const dtPair = (name: string, title: string, caption: string, extras?: Shot[]): ScreenPair => ({
+  title,
+  caption,
+  before: dtShot(`before-${name}`, `Original · ${title}`, caption),
+  after: dtShot(`after-${name}`, `Redesign · ${title}`, caption),
+  extras,
 });
 
 const vd = 'images/vendor-disbursements/';
@@ -551,6 +572,76 @@ export const caseStudies: CaseStudy[] = [
       vdScreen(5, 'Bulk Rules · Get the file', 'Download the ruleset as an Excel file, edit it, and upload it again.', 1476, 911, [1472, 911]),
       vdScreen(6, 'Bulk Rules · Review changes', 'See what the uploaded file adds, changes and deletes before testing it.', 1489, 911, [1480, 911]),
       vdScreen(7, 'Bulk Rules · Apply', 'Apply the tested change. A backup of the current rules is taken first.', 1498, 911, [1472, 910]),
+    ],
+  },
+  {
+    id: 'doctree',
+    number: '04',
+    title: 'DocTree — from a collapsible tree to a review-first workspace',
+    meta: 'Document management · Redesign · Angular rebuild',
+    summary:
+      'Redesigning an internal document management app, then rebuilding its front end in Angular without breaking a single link.',
+    problem:
+      'DocTree stores the documents attached to ERP records across 300+ document types. Reviewers open it from a link in the ERP, find a record’s documents, and accept or reject each one. The original showed documents as a collapsible tree grouped by type, so reviewers expanded groups one by one to find work. Status was shown by unlabelled icons, navigation hid in a drawer, editing created duplicate records, and failed uploads looked successful.',
+    approach:
+      'I worked in four stages, each shippable on its own: a redesign on the existing pages, replacing the paid grid component with my own table, rebuilding every page in Angular (strict TypeScript, signals) behind the same URLs, and a small design system. Before the rebuild I audited every behaviour of the old pages, so each one was kept or fixed on purpose.',
+    result:
+      'Reviewers start from what still needs review, with a status legend, filters in one place and an edit panel that updates records instead of duplicating them. All 11 Documents URLs still work, so ERP links are untouched. No paid UI libraries remain, the audit’s security gaps are fixed, and 1,056 automated tests cover the new code at 100% line, branch and function coverage.',
+    chips: ['UX research', 'Interaction design', 'Angular', 'TypeScript', 'Tailwind CSS', 'Design system', 'Testing'],
+    screens: [
+      dtPair(
+        'nav-menu',
+        'Every page · Navigation',
+        'Pages were hidden in a side drawer, the header held four buttons in four colours and a repeated title. Navigation now lives in the header as Home, Administration and Account menus, and each role has a one-line description.',
+      ),
+      dtPair(
+        'home',
+        'Home · Search',
+        'The form was split into four boxed groups and the Search button sat below the fold on a laptop. Now one card with labelled sections, with Search always in view at the top right.',
+      ),
+      dtPair(
+        'search-results',
+        'Documents · Review table',
+        'Documents were nested under collapsible type groups, with unlabelled status icons and raw keys like customer_account_id. Now one flat table with review-state tabs and counts, a status legend, readable labels and frozen first columns.',
+        [
+          dtShot('after-sidebar-collapsed', 'New · Collapsible filters', 'Search, a date range and a document-type checklist with counts in one sidebar. It collapses to a strip and the browser remembers the choice.'),
+          dtShot('after-columns-menu', 'New · Columns menu', 'Show or hide any column except Document, so wide tables can be narrowed.'),
+        ],
+      ),
+      dtPair(
+        'edit',
+        'Documents · Edit',
+        'The pencil opened a context menu over the status column, and "Add Document Properties" opened an empty form that saved a duplicate record. Now a side panel with pre-filled Document Type, Status and Properties sections, each with its own Save that updates the existing record.',
+        [dtShot('before-properties', 'Original · Properties form', 'The original properties form opened empty, and saving it created a second record.')],
+      ),
+      dtPair(
+        'upload',
+        'Documents · Upload',
+        'The dialog scrolled inside itself, the File field was out of view, and any server response closed it as if the upload worked. Now a compact form with File first; a failed upload keeps the dialog open and says why.',
+        [dtShot('after-upload-type-picker', 'New · Document type picker', 'A searchable picker replaces a plain dropdown of 300+ document types.')],
+      ),
+      dtPair(
+        'admin-home',
+        'Administration · Landing page',
+        'A large green tile sat beside three blue buttons, with nothing saying what each managed. Now two matching cards, each with a one-line description.',
+      ),
+      dtPair(
+        'document-types',
+        'Administration · Document types',
+        'Filter icons on every column but no record count and no visible way to add an entry. Now a search box, "306 out of 306", Columns and Add buttons, in the same table style as Documents.',
+      ),
+      dtPair(
+        'role-mapping',
+        'Administration · Role mapping',
+        'The same grid issues, plus a misspelled "Acccess Level" header. Now sortable headers and the shared table style, so there is one table to learn.',
+      ),
+      {
+        title: 'People without a role · No access',
+        caption:
+          'Someone who signed in without a DocTree role got a blank page with the single word "Forbidden". Now a card explains the account has no role yet and links back to Home.',
+        beforeNote: 'A blank page with only the word “Forbidden”',
+        after: dtShot('after-no-access', 'Redesign · No access', 'A card that explains what happened, with a way back to Home.'),
+      },
     ],
   },
 ];
