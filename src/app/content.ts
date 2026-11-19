@@ -810,6 +810,24 @@ export const experience: Job[] = [
 // Skills (Toolkit) section is hidden for now. Set to true to show it again (section + nav link).
 export const showSkills = false;
 
+export interface Degree {
+  degree: string;
+  school: string;
+  year: string;
+  focus?: string;
+}
+
+export const education: Degree[] = [
+  {
+    degree: 'Ph.D., School of Information',
+    school: 'University of Texas at Austin',
+    year: '2008',
+    focus: 'Human-Computer Interaction, Information Architecture, UX Design, Usability, and Evaluation Methodology.',
+  },
+  { degree: 'M.A. in Communication', school: 'Ewha Womans University, Seoul, Korea', year: '1998' },
+  { degree: 'B.A. in Communication', school: 'Ewha Womans University, Seoul, Korea', year: '1994' },
+];
+
 export const skills: { group: string; items: string[]; wide?: boolean }[] = [
   {
     group: 'UX/UI design & prototyping',

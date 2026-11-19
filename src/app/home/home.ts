@@ -8,6 +8,7 @@ import {
   principles,
   profile,
   skills,
+  education,
   showSkills,
   websites,
 } from '../content';
@@ -30,5 +31,6 @@ export class Home {
   protected readonly apps = apps;
   protected readonly caseStudies = caseStudies;
   protected readonly skills = skills;
+  protected readonly education = education;
   protected readonly showSkills = showSkills;
 }

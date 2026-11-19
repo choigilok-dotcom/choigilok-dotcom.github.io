@@ -2130,6 +2130,49 @@ h2 {
   color: var(--ink-2);
 }
 
+/* ---------- Education ---------- */
+
+.section-education {
+  padding-top: 0;
+  padding-bottom: 96px;
+}
+
+.edu-card {
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  h3 {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+.edu-year {
+  align-self: flex-start;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tag-ink);
+  background: var(--tag-bg);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.edu-school {
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+.edu-focus {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
 /* ---------- Skills ---------- */
 
 .skill-card-wide {
