@@ -7,8 +7,8 @@
       <span class="brand-name">{{ name }}</span>
     </a>
     <div class="nav-links">
-      <a routerLink="/" fragment="work">Work</a>
-      <a routerLink="/" fragment="apps">Apps</a>
+      <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Home</a>
+      <a routerLink="/experience" routerLinkActive="is-active" ariaCurrentWhenActive="page">Experience</a>
       <div class="nav-menu" (keydown.escape)="closeMenu(true)">
         <button
           #menuButton
@@ -17,7 +17,7 @@
           [class.is-active]="onCasePage()"
           [attr.aria-expanded]="menuOpen()"
           aria-controls="case-menu"
-          (click)="menuOpen.set(!menuOpen())"
+          (click)="toggleMenu()"
         >
           Case studies
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
@@ -43,7 +43,6 @@
           </ul>
         }
       </div>
-      <a routerLink="/experience" routerLinkActive="is-active" ariaCurrentWhenActive="page">Experience</a>
       @if (showSkills) {
         <a routerLink="/" fragment="skills">Skills</a>
       }
@@ -59,6 +58,6 @@
 <footer class="site-footer">
   <div class="container footer-inner">
     <span>© {{ year }} {{ name }}</span>
-    <span>Designed in Claude · Built with Angular · Hosted on GitHub Pages</span>
+    <span>Built with Angular · Hosted on GitHub Pages</span>
   </div>
 </footer>

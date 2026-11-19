@@ -37,6 +37,10 @@ export class App {
     { initialValue: false },
   );
 
+  protected toggleMenu(): void {
+    this.menuOpen.set(!this.menuOpen());
+  }
+
   protected closeMenu(returnFocus = false): void {
     if (!this.menuOpen()) return;
     this.menuOpen.set(false);
