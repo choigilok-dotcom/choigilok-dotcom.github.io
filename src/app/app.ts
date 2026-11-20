@@ -2,7 +2,7 @@ import { Component, ElementRef, inject, signal, viewChild } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
-import { caseStudies, profile, showSkills } from './content';
+import { caseStudies, profile } from './content';
 
 @Component({
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
@@ -21,7 +21,6 @@ export class App {
   protected readonly name = profile.name;
   protected readonly initials = profile.initials;
   protected readonly year = new Date().getFullYear();
-  protected readonly showSkills = showSkills;
   protected readonly caseStudies = caseStudies;
 
   /* ---------- Case studies dropdown ---------- */

@@ -3,31 +3,44 @@
 export interface Stat {
   value: string;
   label: string;
-  accent?: boolean;
 }
 
 export interface Principle {
-  icon: 'spark' | 'code' | 'chart' | 'grid';
   title: string;
   text: string;
 }
 
-export interface Website {
+/** A row in the home page's "Selected work" index. */
+export interface WebWork {
   title: string;
+  kind: string;
   description: string;
-  url: string;
-  domain: string;
-  screenshot: string;
-  bilingual?: boolean;
-  tint: 'indigo' | 'sky';
-  tags: string[];
+  stack: string[];
+  url?: string;
+  /** Homepage screenshot (1440 × 900) shown in a browser frame. */
+  screenshot?: string;
+  domain?: string;
 }
 
-export interface Platform {
-  eyebrow: string;
+/** The case study shown large on the home page. */
+export interface FeaturedCase {
+  id: string;
+  label: string;
+  heading: string;
+  summary: string;
+  /** The same task walked through before and after the redesign. */
+  task: { before: string[]; beforeNote: string; after: string[]; afterNote: string };
+  compare: { before: Shot; after: Shot };
+  results: { value: string; label: string }[];
+}
+
+/** A smaller case study card on the home page. */
+export interface CaseCard {
+  id: string;
   title: string;
-  description: string;
-  tags: string[];
+  text: string;
+  /** Screenshot at the top of the card. */
+  shot: { src: string; alt: string; width: number; height: number };
 }
 
 export interface InternalApp {
@@ -176,72 +189,72 @@ export const profile = {
 };
 
 export const heroStats: Stat[] = [
-  { value: '15', label: 'Years designing & building for the web' },
-  { value: '50+', label: 'Internal applications designed and shipped', accent: true },
-  { value: '10+', label: 'Public websites, blogs and intranets' },
+  { value: '15', label: 'years designing and building for the web' },
+  { value: '12+', label: 'years leading front-end work at OMSC' },
+  { value: '50+', label: 'internal applications designed and shipped' },
+  { value: '10+', label: 'public websites, blogs and intranets' },
 ];
 
 export const principles: Principle[] = [
   {
-    icon: 'spark',
     title: 'Prototype fast',
-    text: 'Clickable ideas in hours using Claude AI, so stakeholders react to something real.',
+    text: 'I turn ideas into clickable prototypes early, so users and stakeholders react to something real before anything gets built.',
   },
   {
-    icon: 'code',
     title: 'Ship production code',
-    text: 'Maintainable Angular and TypeScript, built on shared components.',
+    text: 'I build the design myself as accessible, responsive front-end code from reusable components, so what ships matches what was tested.',
   },
   {
-    icon: 'chart',
-    title: 'Measure & improve',
-    text: 'GA4, Microsoft Clarity and Lighthouse guide UX, accessibility and performance work.',
+    title: 'Measure and improve',
+    text: 'I watch how people use what shipped, then improve usability, accessibility and speed based on evidence.',
   },
   {
-    icon: 'grid',
     title: 'Systemize',
-    text: 'One design system so every new app starts consistent instead of from scratch.',
+    text: 'One design system, so every new app starts consistent instead of from scratch.',
   },
 ];
 
-export const websites: Website[] = [
-  {
-    title: 'IAS Website',
-    description:
-      'Bilingual company website. I developed and launched the Spanish version and ship new pages and features driven by Marketing initiatives and business requirements.',
-    url: 'https://intlauto.com',
-    domain: 'intlauto.com',
-    screenshot: 'images/ias-home.jpg',
-    bilingual: true,
-    tint: 'indigo',
-    tags: ['Angular', 'TypeScript', 'Localization (EN / ES)', 'Contentful'],
-  },
+export const webWork: WebWork[] = [
   {
     title: 'MAS Website',
+    kind: 'Public · Full site',
     description:
-      'Modernized from Bootstrap components to native HTML for maintainability and performance, with ongoing feature enhancements.',
+      'The car-buying program for U.S. military and State Department personnel serving overseas. I build every page, from vehicle shopping and trade-ins to order tracking, with content from Contentful and live data from REST APIs.',
+    stack: ['Angular', 'TypeScript', 'Bootstrap', 'Contentful', 'REST APIs'],
     url: 'https://militaryautosource.com',
     domain: 'militaryautosource.com',
     screenshot: 'images/mas-home.jpg',
-    tint: 'sky',
-    tags: ['Angular', 'TypeScript', 'Responsive Design', 'Performance'],
   },
-];
-
-export const platforms: Platform[] = [
   {
-    eyebrow: 'Internal · 3 platforms',
+    title: 'IAS Website',
+    kind: 'Public · Bilingual',
+    description:
+      'I took this site bilingual. With Angular localization, I launched a full Spanish version of every page from the same codebase as the English site, so newcomers buying a car in the U.S. can shop in their own language.',
+    stack: [
+      'Angular',
+      'Angular Localization',
+      'TypeScript',
+      'Bootstrap',
+      'Contentful',
+      'REST APIs',
+    ],
+    url: 'https://intlauto.com',
+    domain: 'intlauto.com',
+    screenshot: 'images/ias-home.jpg',
+  },
+  {
     title: 'Company intranet',
+    kind: 'Internal · 3 platforms',
     description:
-      'Built the company intranet three times as the business and its technology evolved, and keep adding new and updated sections for changing business needs.',
-    tags: ['IBM WebSphere', 'Microsoft SharePoint', 'Liferay + WildFly'],
+      'The company’s internal site for employees. I’ve built it three times on three platforms as the business and its technology evolved, and keep adding sections as needs change.',
+    stack: ['IBM WebSphere', 'Microsoft SharePoint', 'Liferay + WildFly'],
   },
   {
-    eyebrow: 'Public · 5+ blogs',
     title: 'Company blogs',
+    kind: 'Public · 5+ blogs',
     description:
-      'Developed and maintain more than five company blogs — templates, themes and plugins kept consistent in design, functionality and performance.',
-    tags: ['IAS Blog', 'MAS Blog', 'Relocate USA', '+ more'],
+      'Public blogs for the company’s brands, including IAS, MAS and Relocate USA. I develop and maintain their templates, themes and plugins, keeping design, functionality and performance consistent across all of them.',
+    stack: ['IAS Blog', 'MAS Blog', 'Relocate USA', 'and more'],
   },
 ];
 
@@ -250,7 +263,7 @@ export const apps: InternalApp[] = [
     eyebrow: 'Customers & sales',
     title: 'Customer Order Inquiry',
     description:
-      'A read-only inquiry tool for military vehicle orders — and the app the company design system’s starter kit was extracted from.',
+      'A read-only inquiry tool for military vehicle orders, and the app the company design system’s starter kit was extracted from.',
     tags: ['Angular', 'TypeScript', 'Design system'],
   },
   {
@@ -270,7 +283,13 @@ const detail = (name: string, width: number, height: number): Detail => ({
 });
 
 const ds = 'images/design-system/';
-const dsShot = (file: string, label: string, caption: string, width = 1440, height = 900): Shot => ({
+const dsShot = (
+  file: string,
+  label: string,
+  caption: string,
+  width = 1440,
+  height = 900,
+): Shot => ({
   src: `${ds}${file}.webp`,
   label,
   caption,
@@ -312,8 +331,7 @@ export const caseStudies: CaseStudy[] = [
     meta: 'Document management · Redesign · Angular rebuild',
     summary:
       'I redesigned an internal document management app and rebuilt its front end in Angular. The biggest change is how people find documents: instead of opening and closing a tree of groups, they tick the document types they want and get one table.',
-    lede:
-      'I redesigned an internal document management app and rebuilt its front end in Angular. The biggest change is how people find documents. Instead of opening and closing a tree of groups, they tick the document types they want and get one table. Along the way, editing stopped creating duplicate records, and every existing link kept working.',
+    lede: 'I redesigned an internal document management app and rebuilt its front end in Angular. The biggest change is how people find documents. Instead of opening and closing a tree of groups, they tick the document types they want and get one table. Along the way, editing stopped creating duplicate records, and every existing link kept working.',
     context: {
       heading: 'The app and the people who use it',
       paragraphs: [
@@ -337,7 +355,11 @@ export const caseStudies: CaseStudy[] = [
           date: 'Oct 15 – Oct 21',
           text: 'Rebuilt every page as typed components behind the same URLs, and fixed the bugs an audit turned up.',
         },
-        { title: 'Design system', date: 'Oct 27', text: 'Design tokens and one shared style for buttons, cards, dialogs and search boxes.' },
+        {
+          title: 'Design system',
+          date: 'Oct 27',
+          text: 'Design tokens and one shared style for buttons, cards, dialogs and search boxes.',
+        },
       ],
     },
     heroShot: dtShot(
@@ -351,23 +373,43 @@ export const caseStudies: CaseStudy[] = [
       'A filter sidebar replaced the collapsible tree: every document type is a checkbox with its document count, and one click shows one type or several together in the same table. I worked in four stages, each shippable on its own: the redesign on the existing pages, replacing the paid grid with my own table, rebuilding every page in Angular (strict TypeScript, signals) behind the same URLs, and a small design system. Before the rebuild I audited every behaviour of the old pages, so each one was kept or fixed on purpose.',
     result:
       'Finding documents of two types went from a six-step open-scan-close loop to two steps: tick both types, read one table. Editing no longer creates duplicate records, all 11 Documents URLs still work so ERP links are untouched, and no paid UI libraries remain. 1,056 automated tests cover the new code at 100% line, branch and function coverage.',
-    chips: ['UX research', 'Interaction design', 'Angular', 'TypeScript', 'Tailwind CSS', 'Design system', 'Testing'],
+    chips: [
+      'UX research',
+      'Interaction design',
+      'Angular',
+      'TypeScript',
+      'Tailwind CSS',
+      'Design system',
+      'Testing',
+    ],
     screens: [
       {
-        title: 'Biggest improvement · Finding documents: from opening and closing groups to ticking a box',
+        title:
+          'Biggest improvement · Finding documents: from opening and closing groups to ticking a box',
         featured: true,
-        before: dtShot('before-search-results', 'Original · Collapsible tree', 'A collapsible tree: one group per document type, opened and closed by hand.'),
-        after: dtShot('after-search-results', 'Redesign · Filter sidebar', 'Every document type is a checkbox with a count. Tick one or several.'),
+        before: dtShot(
+          'before-search-results',
+          'Original · Collapsible tree',
+          'A collapsible tree: one group per document type, opened and closed by hand.',
+        ),
+        after: dtShot(
+          'after-search-results',
+          'Redesign · Filter sidebar',
+          'Every document type is a checkbox with a count. Tick one or several.',
+        ),
         extras: [
-          dtShot('after-sidebar-collapsed', 'New · Collapsible sidebar', 'Need more room? The sidebar folds to a thin strip and stays that way next visit.'),
+          dtShot(
+            'after-sidebar-collapsed',
+            'New · Collapsible sidebar',
+            'Need more room? The sidebar folds to a thin strip and stays that way next visit.',
+          ),
         ],
         notes: {
           issue:
             'The original page grouped documents in a collapsible tree, one group per document type. To find something, people expanded a group, scanned it, collapsed it and moved to the next one. Looking at two or three types meant keeping several groups open and scrolling between them. Every search cost clicks and memory: which group was it in, and which groups had I already checked?',
           changed:
             'I replaced the tree with a filter sidebar beside one flat table. Every document type is a checkbox, with its document count next to it. Tick one type to see only those documents, or tick several to see them together. Text search and a date range sit in the same sidebar. When the table needs more width, the sidebar collapses to a thin strip, and the browser remembers that choice.',
-          why:
-            'People choose what they want to see instead of digging for it. One click replaces an open-scan-close loop, the counts show where documents are before anyone clicks, and the table can take the full width whenever it’s needed. It saves physical effort (clicks and scrolling) and mental effort (remembering where you’ve been).',
+          why: 'People choose what they want to see instead of digging for it. One click replaces an open-scan-close loop, the counts show where documents are before anyone clicks, and the table can take the full width whenever it’s needed. It saves physical effort (clicks and scrolling) and mental effort (remembering where you’ve been).',
         },
         steps: {
           task: 'Finding documents of two types',
@@ -384,8 +426,16 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         title: 'Documents · The table didn’t say what needed review',
-        before: dtShot('before-search-results', 'Original · Status icons and columns', 'Unlabelled status icons; columns cut off on the right.'),
-        after: dtShot('after-columns-menu', 'Redesign · Review tabs and Columns menu', 'Review-state tabs with counts, a legend and a Columns menu.'),
+        before: dtShot(
+          'before-search-results',
+          'Original · Status icons and columns',
+          'Unlabelled status icons; columns cut off on the right.',
+        ),
+        after: dtShot(
+          'after-columns-menu',
+          'Redesign · Review tabs and Columns menu',
+          'Review-state tabs with counts, a legend and a Columns menu.',
+        ),
         notes: {
           issue:
             'Status was shown by unlabelled icons, including two different ✕ marks. Nothing separated documents still waiting for review from finished ones. Columns ran off the right edge, there was no way to hide any of them, and raw keys such as customer_account_id appeared in a corner table.',
@@ -412,7 +462,8 @@ export const caseStudies: CaseStudy[] = [
         {
           issue:
             'The form was split into four boxed groups under a large heading, and the Submit button was below the fold on a laptop screen.',
-          changed: 'One card with labelled sections and helper text next to each label. The Search button sits at the top right of the card.',
+          changed:
+            'One card with labelled sections and helper text next to each label. The Search button sits at the top right of the card.',
           why: 'The one action on the page is always visible, and there is less to scroll past.',
         },
         ['Submit sits below the fold.', 'One card, Search always in view.'],
@@ -431,7 +482,13 @@ export const caseStudies: CaseStudy[] = [
           'Step 1: the pencil opens a “Menu” over the status column.',
           'One side panel next to the table: file details, then Document Type, Status and Document Properties, each pre-filled with its own Save.',
         ],
-        [dtShot('before-properties', 'Original · Properties form', 'Step 2: “Add Document Properties” opens an empty form; saving it adds a duplicate record.')],
+        [
+          dtShot(
+            'before-properties',
+            'Original · Properties form',
+            'Step 2: “Add Document Properties” opens an empty form; saving it adds a duplicate record.',
+          ),
+        ],
         true,
       ),
       dtPair(
@@ -445,14 +502,22 @@ export const caseStudies: CaseStudy[] = [
           why: 'Fewer steps, and people know whether their document actually arrived.',
         },
         ['A tall dialog; the File field is out of view.', 'A compact form with File first.'],
-        [dtShot('after-upload-type-picker', 'New · Document type picker', 'A searchable picker for 300+ document types.')],
+        [
+          dtShot(
+            'after-upload-type-picker',
+            'New · Document type picker',
+            'A searchable picker for 300+ document types.',
+          ),
+        ],
       ),
       dtPair(
         'admin-home',
         'Administration · The admin landing page didn’t explain itself',
         {
-          issue: 'A large green tile sat next to three blue buttons in a different style, with nothing to say what each one managed.',
-          changed: 'Two matching cards, each with a one-line description and the same button style.',
+          issue:
+            'A large green tile sat next to three blue buttons in a different style, with nothing to say what each one managed.',
+          changed:
+            'Two matching cards, each with a one-line description and the same button style.',
           why: 'Administrators can tell the options apart before clicking.',
         },
         ['One green tile, three blue buttons.', 'Two matching cards with descriptions.'],
@@ -469,17 +534,31 @@ export const caseStudies: CaseStudy[] = [
         },
         ['Document types: filter icons, no count.', 'Search, “306 out of 306”, Columns and Add.'],
         [
-          dtShot('before-role-mapping', 'Original · Role mapping', 'Role mapping, with “Acccess Level”.'),
-          dtShot('after-role-mapping', 'Redesign · Role mapping', 'The same table style as Documents.'),
+          dtShot(
+            'before-role-mapping',
+            'Original · Role mapping',
+            'Role mapping, with “Acccess Level”.',
+          ),
+          dtShot(
+            'after-role-mapping',
+            'Redesign · Role mapping',
+            'The same table style as Documents.',
+          ),
         ],
       ),
       {
         title: 'People without a role · A blank “Forbidden” page for new users',
         beforeNote: 'A blank page with only the word “Forbidden”',
-        after: dtShot('after-no-access', 'Redesign · No access', 'A card that explains what happened.'),
+        after: dtShot(
+          'after-no-access',
+          'Redesign · No access',
+          'A card that explains what happened.',
+        ),
         notes: {
-          issue: 'Someone who signed in without a Document Management System role got a blank page with the single word “Forbidden”.',
-          changed: 'A card that says the account does not have a Document Management System role yet, and a way back to Home.',
+          issue:
+            'Someone who signed in without a Document Management System role got a blank page with the single word “Forbidden”.',
+          changed:
+            'A card that says the account does not have a Document Management System role yet, and a way back to Home.',
           why: 'Anyone without access yet sees this page first. It now tells them what is wrong instead of looking like a crash.',
         },
       },
@@ -491,7 +570,8 @@ export const caseStudies: CaseStudy[] = [
     title: 'MAS Inventory — redesigning the sales team’s vehicle search',
     heading: 'Redesigning the sales team’s vehicle search',
     meta: 'UX audit · Prototyping · Design system',
-    summary: 'A 10-point UX audit of the sales team’s vehicle search, and four prototypes that fix it.',
+    summary:
+      'A 10-point UX audit of the sales team’s vehicle search, and four prototypes that fix it.',
     problem:
       'Promo badges covered the vehicle photos, and the price sat a full card-width away from the vehicle name. Pricing details changed from card to card, and Stock numbers and VINs were grey fine print. The filter sidebar clipped its own counts and showed database codes like MAS_ON_BASE. Only about 2½ vehicles fit on screen.',
     approach:
@@ -654,13 +734,15 @@ export const caseStudies: CaseStudy[] = [
             text: 'Status badges and the base tag line up in one row above the specs, so a vehicle’s status reads in one place.',
           },
         ],
-        stillOpen: 'MSRP and savings are still small text under the price, and days in stock is plain text.',
+        stillOpen:
+          'MSRP and savings are still small text under the price, and days in stock is plain text.',
       },
       {
         src: `${inv}prototype-3.webp`,
         label: 'Prototype 3 · Pricing',
         tab: 'Pricing',
-        caption: 'Every card shows MSRP and savings the same way, and days in stock becomes a chip.',
+        caption:
+          'Every card shows MSRP and savings the same way, and days in stock becomes a chip.',
         width: 1182,
         height: 830,
         focus: 'Made the pricing read the same way on every card.',
@@ -685,9 +767,13 @@ export const caseStudies: CaseStudy[] = [
           'Copy buttons for Stock and VIN, color-coded stock age, badges beside the model line, and savings right under the price.',
         width: 1213,
         height: 826,
-        focus: 'Tuned the card for the tasks sales staff repeat all day. This is the current direction.',
+        focus:
+          'Tuned the card for the tasks sales staff repeat all day. This is the current direction.',
         solves: [
-          { issue: 5, text: 'Copy buttons next to Stock and VIN — one click instead of selecting text.' },
+          {
+            issue: 5,
+            text: 'Copy buttons next to Stock and VIN — one click instead of selecting text.',
+          },
           {
             issue: 5,
             text: 'Days in stock is color-coded: amber for aging inventory, teal for new arrivals, so managers spot slow sellers.',
@@ -731,9 +817,27 @@ export const caseStudies: CaseStudy[] = [
         note: 'Every value comes from a named, closed set: one primary blue, seven inks, six surfaces, a seven-step type scale and Tailwind’s default spacing. No one-off sizes or colors.',
         natural: true,
         shots: [
-          dsShot('foundations-color', 'Color', 'Brand colors, ink, surfaces and status pills.', 1816, 1186),
-          dsShot('foundations-type', 'Type', 'Inter for the interface, IBM Plex Mono for every number, on a fixed scale from 10 to 21px.', 1816, 916),
-          dsShot('foundations-layout', 'Spacing, radius and elevation', 'Spacing steps, three radii, five shadows, the app header and Font Awesome icons.', 1816, 1280),
+          dsShot(
+            'foundations-color',
+            'Color',
+            'Brand colors, ink, surfaces and status pills.',
+            1816,
+            1186,
+          ),
+          dsShot(
+            'foundations-type',
+            'Type',
+            'Inter for the interface, IBM Plex Mono for every number, on a fixed scale from 10 to 21px.',
+            1816,
+            916,
+          ),
+          dsShot(
+            'foundations-layout',
+            'Spacing, radius and elevation',
+            'Spacing steps, three radii, five shadows, the app header and Font Awesome icons.',
+            1816,
+            1280,
+          ),
         ],
       },
       {
@@ -741,18 +845,44 @@ export const caseStudies: CaseStudy[] = [
         note: 'The five shared Angular components each new app starts with. They replaced button and status-pill markup that had been copied by hand into about 10 feature files.',
         natural: true,
         shots: [
-          dsShot('components', 'Shared components', 'Button (six variants and two sizes), Badge, SectionCard, FieldList and ProgressSteps.', 1440, 292),
+          dsShot(
+            'components',
+            'Shared components',
+            'Button (six variants and two sizes), Badge, SectionCard, FieldList and ProgressSteps.',
+            1440,
+            292,
+          ),
         ],
       },
       {
         title: 'In use: Customer Order Inquiry',
         note: 'The reference app the starter kit was extracted from. Staff find a customer, pick an order and read its vehicle, shipping, financial and activity detail. Shown with sample data.',
         shots: [
-          dsShot('app-landing', 'Landing', 'Search by customer number or name, with three cards explaining the flow.'),
-          dsShot('app-summary', 'Account summary', 'One card per order, with a FieldList and a progress column.'),
-          dsShot('app-vehicle', 'Vehicle details', 'Options and codes, a status pill and the ProgressSteps bar.'),
-          dsShot('app-financials', 'Financials', 'Financing, pricing and the AR ledger. Every figure is set in IBM Plex Mono.'),
-          dsShot('app-activity', 'Activity', 'Tasks, documents, mail history and comments, in tabs with a segmented control.'),
+          dsShot(
+            'app-landing',
+            'Landing',
+            'Search by customer number or name, with three cards explaining the flow.',
+          ),
+          dsShot(
+            'app-summary',
+            'Account summary',
+            'One card per order, with a FieldList and a progress column.',
+          ),
+          dsShot(
+            'app-vehicle',
+            'Vehicle details',
+            'Options and codes, a status pill and the ProgressSteps bar.',
+          ),
+          dsShot(
+            'app-financials',
+            'Financials',
+            'Financing, pricing and the AR ledger. Every figure is set in IBM Plex Mono.',
+          ),
+          dsShot(
+            'app-activity',
+            'Activity',
+            'Tasks, documents, mail history and comments, in tabs with a segmented control.',
+          ),
         ],
       },
     ],
@@ -807,9 +937,6 @@ export const experience: Job[] = [
   },
 ];
 
-// Skills (Toolkit) section is hidden for now. Set to true to show it again (section + nav link).
-export const showSkills = false;
-
 export interface Degree {
   degree: string;
   school: string;
@@ -822,57 +949,114 @@ export const education: Degree[] = [
     degree: 'Ph.D., School of Information',
     school: 'University of Texas at Austin',
     year: '2008',
-    focus: 'Human-Computer Interaction, Information Architecture, UX Design, Usability, and Evaluation Methodology.',
+    focus:
+      'Human-Computer Interaction, Information Architecture, UX Design, Usability, and Evaluation Methodology.',
   },
   { degree: 'M.A. in Communication', school: 'Ewha Womans University, Seoul, Korea', year: '1998' },
   { degree: 'B.A. in Communication', school: 'Ewha Womans University, Seoul, Korea', year: '1994' },
 ];
 
-export const skills: { group: string; items: string[]; wide?: boolean }[] = [
+/* ---------- Home page: case studies and toolkit ---------- */
+
+export const featuredCase: FeaturedCase = {
+  id: 'doctree',
+  label: 'Document management · Angular rebuild · 2026',
+  heading: 'From a collapsible tree to a one-click filter sidebar',
+  summary:
+    'I redesigned an internal document management app used to review documents across 300+ types, then rebuilt its front end in Angular. Finding documents went from an open-scan-close loop to ticking a box. Along the way, editing stopped creating duplicate records and every existing link kept working.',
+  task: {
+    beforeNote: '2 doc types',
+    before: [
+      'Find the group',
+      'Expand and scan',
+      'Collapse',
+      'Find the next group',
+      'Expand and scan',
+      'Remember what you checked',
+    ],
+    afterNote: 'same task',
+    after: ['Tick both types', 'Read one table'],
+  },
+  compare: {
+    before: dtShot('before-search-results', 'Before', 'A tree of groups, opened one at a time.'),
+    after: dtShot('after-search-results', 'After', 'Filters, review tabs and one table.'),
+  },
+  results: [
+    { value: '11 / 11', label: 'URLs unchanged, so ERP links kept working' },
+    { value: '1,056', label: 'automated tests, 100% coverage on new code' },
+    { value: '0', label: 'paid UI libraries after replacing the vendor grid' },
+    { value: '9', label: 'usability issues found and fixed' },
+  ],
+};
+
+export const caseCards: CaseCard[] = [
+  {
+    id: 'mas-inventory',
+    title: 'MAS Inventory: redesigning the sales team’s vehicle search',
+    text: 'A 10-point UX audit of the sales team’s vehicle search, and four prototypes that fix it.',
+    shot: {
+      src: 'images/inventory/prototype-4.webp',
+      alt: 'Prototype 4 of the MAS Inventory search: a filter sidebar and vehicle cards with price, specs, stock number, VIN and location.',
+      width: 1213,
+      height: 826,
+    },
+  },
+  {
+    id: 'design-system',
+    title: 'A design system for internal applications',
+    text: 'One shared design system and Angular starter kit, now behind seven internal apps. New apps start consistent instead of from scratch.',
+    shot: {
+      src: 'images/design-system/foundations-color.webp',
+      alt: 'The design system’s color foundations: brand colors, ink, surfaces and status pills.',
+      width: 1816,
+      height: 1186,
+    },
+  },
+];
+
+/** A skill group in the Toolkit grid. `key` items are highlighted and listed first. */
+export interface SkillGroup {
+  group: string;
+  note: string;
+  key: string[];
+  more: string[];
+}
+
+export const toolkit: SkillGroup[] = [
   {
     group: 'UX/UI design & prototyping',
-    items: ['Figma', 'Balsamiq', 'Photoshop', 'Illustrator'],
+    note: 'Wireframes, visual design and clickable prototypes.',
+    key: ['Figma'],
+    more: ['Balsamiq', 'Photoshop', 'Illustrator'],
   },
   {
     group: 'Front-end development',
-    items: [
-      'HTML5',
-      'CSS3',
-      'JavaScript',
-      'TypeScript',
-      'Angular',
-      'AngularJS',
-      'Bootstrap',
-      'Tailwind CSS',
-      'Flexbox',
-      'CSS Grid',
-      'Sass',
-    ],
+    note: 'Production web apps and responsive sites.',
+    key: ['Angular', 'TypeScript', 'Tailwind CSS'],
+    more: ['HTML5', 'CSS3', 'JavaScript', 'Sass', 'CSS Grid', 'Flexbox', 'AngularJS', 'Bootstrap'],
   },
   {
     group: 'AI-assisted design & development',
-    items: [
-      'Claude AI',
-      'AI-Assisted UX Design',
-      'AI-Assisted Prototyping',
-      'AI-Assisted Front-end Development',
-    ],
+    note: 'Faster prototypes and front-end builds with AI.',
+    key: ['Claude AI'],
+    more: ['AI-assisted UX design', 'AI-assisted prototyping', 'AI-assisted front-end development'],
   },
   {
-    group: 'Evaluation tools',
-    items: ['Google Lighthouse', 'GA4', 'Clarity'],
-  },
-  {
-    group: 'Development tools',
-    items: ['Git', 'Chrome DevTools', 'npm'],
+    group: 'Evaluation',
+    note: 'Usage, accessibility and performance, measured.',
+    key: ['GA4', 'Microsoft Clarity', 'Google Lighthouse'],
+    more: [],
   },
   {
     group: 'CMS & enterprise platforms',
-    items: ['Contentful', 'WordPress', 'Drupal', 'SharePoint', 'Liferay', 'IBM WebSphere', 'Magento'],
+    note: 'Public sites, blogs and company intranets.',
+    key: ['Contentful'],
+    more: ['WordPress', 'SharePoint', 'Liferay', 'IBM WebSphere', 'Drupal', 'Magento'],
   },
   {
-    group: 'Additional technologies',
-    items: ['jQuery', 'Dojo', 'PHP', 'Java', 'XML', 'MySQL'],
-    wide: true,
+    group: 'Development tools',
+    note: 'Version control, debugging and packages.',
+    key: ['Git'],
+    more: ['Chrome DevTools', 'npm'],
   },
 ];
