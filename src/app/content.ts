@@ -284,7 +284,7 @@ export const apps: InternalApp[] = [
     title: 'Customer Order Inquiry',
     description:
       'A read-only tool that puts a customer’s orders, shipping, payments and history on one page, so staff can answer a call without switching between four systems. The company design system’s starter kit was extracted from it.',
-    tags: ['Angular', 'TypeScript', 'Tailwind CSS', 'Design system'],
+    tags: ['Claude Design', 'Prototyping', 'Angular', 'TypeScript', 'Tailwind CSS', 'REST Service'],
     demoUrl: 'demos/customer-order-inquiry/',
   },
   {

@@ -29,6 +29,9 @@ jobs:
 
       - run: npx ng build --base-href /
 
+      # Add the "Want to see the real code?" note to every app in public/demos/
+      - run: node scripts/add-demo-notes.mjs dist/portfolio/browser
+
       # GitHub Pages has no SPA routing: serve the app for unknown paths (e.g. /case-studies)
       # so direct links and refreshes load the page instead of a 404.
       - run: cp dist/portfolio/browser/index.html dist/portfolio/browser/404.html

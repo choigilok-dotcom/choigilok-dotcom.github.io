@@ -692,9 +692,9 @@
     color: var(--panel-ink);
     border-radius: 16px;
     padding: 2rem;
-    display: grid;
-    gap: 0.75rem;
-    align-content: space-between;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
 
     b {
       font-family: var(--font-display);
@@ -702,6 +702,43 @@
       font-weight: 800;
       letter-spacing: -0.04em;
       line-height: 0.9;
+    }
+
+    /* Apps on the design system, pinned to the bottom of the panel */
+    .big-apps {
+      margin-top: auto;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      display: grid;
+      gap: 0.5rem;
+
+      .big-apps-title {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--panel-muted);
+      }
+
+      /* Names run inline, separated by middots */
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--panel-ink);
+      }
+
+      li {
+        display: inline;
+
+        &:not(:last-child)::after {
+          /* Non-breaking space keeps the dot on the same line as the name before it */
+          content: '\00a0· ';
+          color: var(--panel-muted);
+        }
+      }
     }
 
     p {
@@ -729,9 +766,9 @@
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 1.6rem;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 0.7rem;
-    align-content: start;
 
     h3 {
       font-size: 1.25rem;
@@ -743,9 +780,11 @@
       font-size: 0.95rem;
     }
 
+    /* Pinned to the bottom of the card */
     .app-demo {
-      justify-self: start;
-      margin-top: 0.3rem;
+      align-self: flex-start;
+      margin-top: auto;
+      padding-top: 0.3rem;
       font-weight: 600;
       font-size: 0.95rem;
       color: var(--accent);

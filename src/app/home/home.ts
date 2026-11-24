@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import {
   apps,
   caseCards,
+  caseStudies,
   education,
   featuredCase,
   heroStats,
@@ -30,6 +31,8 @@ export class Home {
   protected readonly principles = principles;
   protected readonly webWork = webWork;
   protected readonly apps = apps;
+  /** Apps built on the design system: the chips of the design system case study. */
+  protected readonly designSystemApps = caseStudies.find((cs) => cs.id === 'design-system')?.chips ?? [];
   protected readonly toolkit = toolkit;
   protected readonly education = education;
 

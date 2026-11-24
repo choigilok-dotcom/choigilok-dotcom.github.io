@@ -199,6 +199,14 @@
           <strong>Internal applications designed and built</strong>For operations, finance, sales and document
           workflows, used by teams across the company every day.
         </p>
+        <div class="big-apps">
+          <p class="big-apps-title">Built on my design system</p>
+          <ul>
+            @for (name of designSystemApps; track name) {
+              <li>{{ name }}</li>
+            }
+          </ul>
+        </div>
       </div>
       <div class="app-cards">
         @for (app of apps; track app.title) {
