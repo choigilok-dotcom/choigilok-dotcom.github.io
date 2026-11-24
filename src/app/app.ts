@@ -2,7 +2,10 @@ import { Component, ElementRef, inject, signal, viewChild } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
-import { caseStudies, profile } from './content';
+import { caseStudies, demos, profile } from './content';
+
+/** The header's dropdown menus. */
+type MenuId = 'cases' | 'demos';
 
 @Component({
   imports: [RouterOutlet, RouterLink, RouterLinkActive],
@@ -16,16 +19,19 @@ import { caseStudies, profile } from './content';
 export class App {
   private readonly router = inject(Router);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
-  private readonly menuButton = viewChild<ElementRef<HTMLButtonElement>>('menuButton');
+  private readonly casesButton = viewChild<ElementRef<HTMLButtonElement>>('casesButton');
+  private readonly demosButton = viewChild<ElementRef<HTMLButtonElement>>('demosButton');
 
   protected readonly name = profile.name;
   protected readonly initials = profile.initials;
   protected readonly year = new Date().getFullYear();
   protected readonly caseStudies = caseStudies;
+  protected readonly demos = demos;
 
-  /* ---------- Case studies dropdown ---------- */
+  /* ---------- Header dropdowns (Case studies, Live demos) ---------- */
 
-  protected readonly menuOpen = signal(false);
+  /** Which dropdown is open; only one at a time. */
+  protected readonly openMenu = signal<MenuId | null>(null);
 
   /** True on any case study page, so the menu button shows as current. */
   protected readonly onCasePage = toSignal(
@@ -36,19 +42,23 @@ export class App {
     { initialValue: false },
   );
 
-  protected toggleMenu(): void {
-    this.menuOpen.set(!this.menuOpen());
+  protected toggleMenu(id: MenuId): void {
+    this.openMenu.set(this.openMenu() === id ? null : id);
   }
 
   protected closeMenu(returnFocus = false): void {
-    if (!this.menuOpen()) return;
-    this.menuOpen.set(false);
-    if (returnFocus) this.menuButton()?.nativeElement.focus();
+    const id = this.openMenu();
+    if (!id) return;
+    this.openMenu.set(null);
+    if (!returnFocus) return;
+    const button = id === 'cases' ? this.casesButton() : this.demosButton();
+    button?.nativeElement.focus();
   }
 
-  /** Close when a click lands outside the menu. */
+  /** Close when a click lands outside every menu. */
   protected onDocumentClick(event: MouseEvent): void {
-    const menu = this.host.nativeElement.querySelector('.nav-menu');
-    if (menu && !menu.contains(event.target as Node)) this.closeMenu();
+    const menus = this.host.nativeElement.querySelectorAll('.nav-menu');
+    const inside = Array.from(menus).some((m) => m.contains(event.target as Node));
+    if (!inside) this.closeMenu();
   }
 }

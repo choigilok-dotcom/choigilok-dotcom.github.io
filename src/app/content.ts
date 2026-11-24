@@ -48,7 +48,27 @@ export interface InternalApp {
   title: string;
   description: string;
   tags: string[];
+  /** Link to a live demo of the app, if one is published. */
+  demoUrl?: string;
 }
+
+/** A live, clickable demo listed in the header’s Live demos menu. */
+export interface Demo {
+  title: string;
+  /** One short line under the title in the menu. */
+  description: string;
+  /** Path of a static app build under /public. */
+  url: string;
+}
+
+/** Live demos. To add one: copy its build into public/demos/<name>/ and add an entry here. */
+export const demos: Demo[] = [
+  {
+    title: 'Customer Order Inquiry',
+    description: 'A customer’s orders, shipping and payments on one page',
+    url: 'demos/customer-order-inquiry/',
+  },
+];
 
 /** A full screenshot that opens in the lightbox. */
 export interface Shot {
@@ -263,8 +283,9 @@ export const apps: InternalApp[] = [
     eyebrow: 'Customers & sales',
     title: 'Customer Order Inquiry',
     description:
-      'A read-only inquiry tool for military vehicle orders, and the app the company design system’s starter kit was extracted from.',
-    tags: ['Angular', 'TypeScript', 'Design system'],
+      'A read-only tool that puts a customer’s orders, shipping, payments and history on one page, so staff can answer a call without switching between four systems. The company design system’s starter kit was extracted from it.',
+    tags: ['Angular', 'TypeScript', 'Tailwind CSS', 'Design system'],
+    demoUrl: 'demos/customer-order-inquiry/',
   },
   {
     eyebrow: 'Operations',

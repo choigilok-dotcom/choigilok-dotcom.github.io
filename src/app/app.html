@@ -11,18 +11,18 @@
       <a routerLink="/experience" routerLinkActive="is-active" ariaCurrentWhenActive="page">Experience</a>
       <div class="nav-menu" (keydown.escape)="closeMenu(true)">
         <button
-          #menuButton
+          #casesButton
           type="button"
           class="nav-menu-button"
           [class.is-active]="onCasePage()"
-          [attr.aria-expanded]="menuOpen()"
+          [attr.aria-expanded]="openMenu() === 'cases'"
           aria-controls="case-menu"
-          (click)="toggleMenu()"
+          (click)="toggleMenu('cases')"
         >
           Case studies
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
         </button>
-        @if (menuOpen()) {
+        @if (openMenu() === 'cases') {
           <ul id="case-menu" class="nav-dropdown">
             @for (cs of caseStudies; track cs.id) {
               <li>
@@ -36,6 +36,37 @@
                   <span class="nav-dropdown-text">
                     <span class="nav-dropdown-title">{{ cs.title.split(' — ')[0] }}</span>
                     <span class="nav-dropdown-sub">{{ cs.title.split(' — ')[1] }}</span>
+                  </span>
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+      <div class="nav-menu" (keydown.escape)="closeMenu(true)">
+        <button
+          #demosButton
+          type="button"
+          class="nav-menu-button"
+          [attr.aria-expanded]="openMenu() === 'demos'"
+          aria-controls="demo-menu"
+          (click)="toggleMenu('demos')"
+        >
+          Live demos
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
+        </button>
+        @if (openMenu() === 'demos') {
+          <ul id="demo-menu" class="nav-dropdown nav-dropdown--end">
+            @for (demo of demos; track demo.url) {
+              <li>
+                <a [href]="demo.url" target="_blank" rel="noopener" (click)="closeMenu()">
+                  <span class="nav-dropdown-text">
+                    <span class="nav-dropdown-title">
+                      {{ demo.title }}
+                      <svg class="external-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></svg>
+                      <span class="visually-hidden">(opens in a new tab)</span>
+                    </span>
+                    <span class="nav-dropdown-sub">{{ demo.description }}</span>
                   </span>
                 </a>
               </li>
