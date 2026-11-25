@@ -1,0 +1,1 @@
+import{$a as i}from"./chunk-WWZFDPUH.js";var n=class t{transform(e){return e?e.replace(/\b\w/g,r=>r.toUpperCase()):""}static \u0275fac=function(r){return new(r||t)};static \u0275pipe=i({name:"titleCase",type:t,pure:!0})};export{n as a};

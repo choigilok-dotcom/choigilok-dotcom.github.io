@@ -68,6 +68,11 @@ export const demos: Demo[] = [
     description: 'A customer’s orders, shipping and payments on one page',
     url: 'demos/customer-order-inquiry/',
   },
+  {
+    title: 'Custom Email System',
+    description: 'Order emails merged from approved templates',
+    url: 'demos/on-demand-email-system/',
+  },
 ];
 
 /** A full screenshot that opens in the lightbox. */
@@ -288,11 +293,12 @@ export const apps: InternalApp[] = [
     demoUrl: 'demos/customer-order-inquiry/',
   },
   {
-    eyebrow: 'Operations',
-    title: 'Operations Dashboard',
+    eyebrow: 'Customer communication',
+    title: 'Custom Email System',
     description:
-      'An at-a-glance view of day-to-day operations, built on the company design system alongside six other internal apps.',
-    tags: ['Angular', 'TypeScript', 'REST APIs'],
+      'Staff pick an order and an approved template, and the email fills in the customer and order details before it’s sent. Editors build and manage the templates themselves, and every sent email is logged against its order.',
+    tags: ['Angular', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Express', 'Zod', 'REST APIs'],
+    demoUrl: 'demos/on-demand-email-system/',
   },
 ];
 
