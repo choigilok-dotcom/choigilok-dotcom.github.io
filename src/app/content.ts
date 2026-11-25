@@ -1077,8 +1077,8 @@ export const toolkit: SkillGroup[] = [
   {
     group: 'CMS & enterprise platforms',
     note: 'Public sites, blogs and company intranets.',
-    key: ['Contentful'],
-    more: ['WordPress', 'SharePoint', 'Liferay', 'IBM WebSphere', 'Drupal', 'Magento'],
+    key: [],
+    more: ['Contentful', 'WordPress', 'SharePoint', 'Liferay', 'IBM WebSphere', 'Drupal', 'Magento'],
   },
   {
     group: 'Development tools',
