@@ -830,13 +830,13 @@ export const caseStudies: CaseStudy[] = [
     result:
       'Seven internal applications now run on the system, with more in development — and every new app starts from the same kit.',
     chips: [
-      'Task List',
-      'Operations Dashboard',
       'Custom Email System',
-      'Vendor Disbursement',
       'Customer Order Inquiry',
-      'Vehicle Management',
       'Document Management',
+      'Operations Dashboard',
+      'Task List',
+      'Vehicle Management',
+      'Vendor Disbursement',
     ],
     gallery: [
       {
